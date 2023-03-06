@@ -1,23 +1,12 @@
 import sqlite3
+import pandas as pd
+
 
 def createDataTable():
     con = sqlite3.connect("SI.db")
-    cur = con.cursor()
-    cur.execute("CREATE TABLE IF NOT EXISTS show("
-                "id String PRIMARY KEY,"
-                "type String not null,"
-                "title String not null,"
-                "director String,"
-                "cast String,"
-                "country String,"
-                "date_added String not null,"
-                "release_year integer not null,"
-                "rating String not null,"
-                "duration String not null,"
-                "listed_in text not null,"
-                "description text not null"
-                ")")
+    df = pd.read_csv("netflix_titles.csv",sep = ';', header=1)
+    df.to_sql("show", con, schema = None, if_exists= 'replace', index = False)
+    con.commit()
 
 
 createDataTable()
-
