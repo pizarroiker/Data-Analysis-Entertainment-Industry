@@ -1,4 +1,7 @@
+import math
 import sqlite3
+
+import numpy as np
 import pandas as pd
 
 
@@ -15,7 +18,30 @@ def num_samples():
             "release_year NOT NULL AND rating NOT NULL AND duration NOT NULL AND listed_in NOT NULL AND " \
             "description NOT NULL and 'cast' NOT NULL"
     tam = pd.read_sql_query(frase,con).values[0][0]
-    print("Numero de muestras sin missing values: " + str(tam))
+    print("Numero de muestras completas (sin missing values): " + str(tam))
+
+def med_duracion():
+    con = sqlite3.connect("SI.db")
+    frase = "SELECT AVG(duration) FROM show WHERE type = 'Movie' AND duration IS NOT NULL"
+    frase2 = "SELECT AVG(duration) FROM show WHERE type = 'TV Show' AND duration IS NOT NULL"
+    med_film = pd.read_sql_query(frase, con).values[0][0]
+    med_show = pd.read_sql_query(frase2, con).values[0][0]
+    print("Duración media (películas): " + str(round(med_film))+ " minutos")
+    print("Duración media (series): " + str(round(med_show)) + " temporadas")
+
+#def des_duracion():
+#    con = sqlite3.connect("SI.db")
+#   frase = "SELECT stdev(duration) FROM show WHERE type = 'Movie' AND duration IS NOT NULL"
+#   frase2 = "SELECT stdev(duration) FROM show WHERE type = 'TV Show' AND duration IS NOT NULL"
+#    list_film = pd.read_sql_query(frase, con).values[0][0]
+#    list_show = pd.read_sql_query(frase2, con).values[0][0]
+#    print(list_show)
+#    print(list_film)
+    #print("Desviación típica de la duracion (películas): " + str(round(np.std(list_film),2)))
+    #print("Desviación típica de la duracion (series): " + str(round(np.std(list_show),2)))
 
 createDataTable()
 num_samples()
+med_duracion()
+#des_duracion()
+
