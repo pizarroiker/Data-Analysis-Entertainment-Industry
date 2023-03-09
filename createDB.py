@@ -38,8 +38,32 @@ def des_duracion():
     print("Desviación típica de la duración (películas): " + str(round(std_film, 2)))
     print("Desviación típica de la duración (series): " + str(round(std_show, 2)))
 
+def max_duracion():
+    con = sqlite3.connect("SI.db")
+    frase = "SELECT MAX(CAST(duration as integer)) FROM show WHERE type = 'Movie' AND duration IS NOT NULL"
+    frase2 = "SELECT MAX(CAST(duration as integer)) FROM show WHERE type = 'TV Show' AND duration IS NOT NULL"
+    std_film = pd.read_sql_query(frase, con).values[0][0]
+    std_show = pd.read_sql_query(frase2, con).values[0][0]
+    print("Máxima duración de una película: " + str(std_film)+ " minutos")
+    print("Máxima duración de una serie: " + str(std_show) + " temporadas")
+
+def min_duracion():
+    con = sqlite3.connect("SI.db")
+    frase = "SELECT MIN(CAST(duration as integer)) FROM show WHERE type = 'Movie' AND duration IS NOT NULL"
+    frase2 = "SELECT MIN(CAST(duration as integer)) FROM show WHERE type = 'TV Show' AND duration IS NOT NULL"
+    std_film = pd.read_sql_query(frase, con).values[0][0]
+    std_show = pd.read_sql_query(frase2, con).values[0][0]
+    print("Mínima duración de una película: " + str(std_film)+ " minutos")
+    print("Mínima duración de una serie: " + str(std_show) + " temporadas")
+
 createDataTable()
+print()
+print("------ APARTADO 2 ------")
 num_samples()
 med_duracion()
 des_duracion()
+max_duracion()
+min_duracion()
+print()
+print("------ APARTADO 3 ------")
 
