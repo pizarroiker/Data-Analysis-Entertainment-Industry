@@ -29,19 +29,17 @@ def med_duracion():
     print("Duración media (películas): " + str(round(med_film))+ " minutos")
     print("Duración media (series): " + str(round(med_show)) + " temporadas")
 
-#def des_duracion():
-#    con = sqlite3.connect("SI.db")
-#   frase = "SELECT stdev(duration) FROM show WHERE type = 'Movie' AND duration IS NOT NULL"
-#   frase2 = "SELECT stdev(duration) FROM show WHERE type = 'TV Show' AND duration IS NOT NULL"
-#    list_film = pd.read_sql_query(frase, con).values[0][0]
-#    list_show = pd.read_sql_query(frase2, con).values[0][0]
-#    print(list_show)
-#    print(list_film)
-    #print("Desviación típica de la duracion (películas): " + str(round(np.std(list_film),2)))
-    #print("Desviación típica de la duracion (series): " + str(round(np.std(list_show),2)))
+def des_duracion():
+    con = sqlite3.connect("SI.db")
+    frase = "SELECT AVG(duration * duration) - AVG(duration) * AVG(duration) FROM show WHERE type = 'Movie' AND duration IS NOT NULL"
+    frase2 = "SELECT AVG(duration * duration) - AVG(duration) * AVG(duration) FROM show WHERE type = 'TV Show' AND duration IS NOT NULL"
+    std_film = pd.read_sql_query(frase, con).values[0][0] ** 0.5
+    std_show = pd.read_sql_query(frase2, con).values[0][0] ** 0.5
+    print("Desviación típica de la duración (películas): " + str(round(std_film, 2)))
+    print("Desviación típica de la duración (series): " + str(round(std_show, 2)))
 
 createDataTable()
 num_samples()
 med_duracion()
-#des_duracion()
+des_duracion()
 
