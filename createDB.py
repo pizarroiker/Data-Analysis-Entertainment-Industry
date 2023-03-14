@@ -1,10 +1,8 @@
-import math
+import random
 import re
 import sqlite3
-from statistics import mean
-
-import numpy as np
 import pandas as pd
+import numpy
 
 
 def createDataTable():
@@ -83,6 +81,62 @@ def info_f(f):
     print("Máximo: " + str(f['duration'].max()))
     print("Mínimo: " + str(f['duration'].min()))
 
+def tabla_usuarios():
+    conexion = sqlite3.connect("SI.db")
+    try:
+        conexion.execute("""create table usuarios (
+                                  id integer primary key autoincrement,
+                                  nombre text,
+                                  fecha text
+                            )""")
+        print("se creo la tabla usuarios")
+    except sqlite3.OperationalError:
+        print("La tabla usuarios ya existe")
+    conexion.execute("insert into usuarios(nombre,fecha) values (?,?)", ("Brais","16-09-2022"))
+    conexion.execute("insert into usuarios(nombre,fecha) values (?,?)", ("Iker", "16-03-2023"))
+    conexion.execute("insert into usuarios(nombre,fecha) values (?,?)", ("Javi", "16-06-2021"))
+    conexion.execute("insert into usuarios(nombre,fecha) values (?,?)", ("Eva", "16-01-2020"))
+    conexion.execute("insert into usuarios(nombre,fecha) values (?,?)", ("Alba", "16-11-2022"))
+    conexion.execute("insert into usuarios(nombre,fecha) values (?,?)", ("Sergio", "16-08-2022"))
+    conexion.execute("insert into usuarios(nombre,fecha) values (?,?)", ("Gabriel", "16-12-2020"))
+    conexion.execute("insert into usuarios(nombre,fecha) values (?,?)", ("Gustabo", "16-02-2023"))
+    conexion.execute("insert into usuarios(nombre,fecha) values (?,?)", ("Michelangelo", "16-07-2020"))
+    conexion.execute("insert into usuarios(nombre,fecha) values (?,?)", ("Octavio Bikes", "16-04-2021"))
+def tabla_visionados():
+    conexion = sqlite3.connect("SI.db")
+    try:
+        conexion.execute("""create table visionados(
+                                  id integer primary key autoincrement,
+                                  id_pelicula integer,
+                                  id_usuario integer,
+                                  puntuacion real
+                            )""")
+        print("se creo la tabla visionados")
+    except sqlite3.OperationalError:
+        print("La tabla visionados ya existe")
+
+def introducir_visionados():
+    conexion = sqlite3.connect("SI.db")
+    cursor = conexion.cursor()
+    valores = set()
+    while len(valores)<100:
+        id_pelicula = random.randint(1,10000)
+        id_usuario = random.randint(1, 10)
+        puntuacion = random.uniform(0.0,5.0)
+        valores.add((id_pelicula,id_usuario,puntuacion))
+    for valor in valores:
+        consulta = "Select * from visionados where id_pelicula = ? and id_usuario = ? and puntuacion =  ? "
+        if cursor.execute(consulta,valor).fetchone() is None:
+            insercion = "insert into visionados(id_pelicula,id_usuario,puntuacion) values (?,?,?)"
+            cursor.execute(insercion,valor)
+    print("Entradas creadas")
+
+def graficos():
+    con = sqlite3.connect("SI.db")
+    frase = "SELECT  * FROM show WHERE type = 'Movie' AND CAST(duration as integer) >= 90 "
+    df = pd.read_sql_query(frase, con)
+    df.plot
+
 createDataTable()
 print()
 print("------ APARTADO 2 ------")
@@ -110,3 +164,10 @@ print()
 print("----- Series que duran 2 temporadas o menos -----")
 print()
 info_f(f4)
+print()
+print("------ APARTADO 4 y 5 ------")
+print()
+tabla_usuarios()
+tabla_visionados()
+introducir_visionados()
+graficos()
