@@ -74,7 +74,6 @@ def group_dataframe():
 
 def info_f(f):
     print("Número de películas: "+str(f['duration'].shape[0]))
-    print("Número de missing values: "+ str(f.isnull().sum().sum()))
     print("Mediana: "+ str(f['duration'].median()))
     print("Media: " + str(round(f['duration'].mean(), 2)))
     print("Varianza: " + str(round(f['duration'].var(), 2)))
@@ -120,7 +119,7 @@ def introducir_visionados():
     cursor = conexion.cursor()
     valores = set()
     while len(valores)<100:
-        id_pelicula = random.randint(1,10000)
+        id_pelicula = random.randint(1,8809)
         id_usuario = random.randint(1, 10)
         puntuacion = random.uniform(0.0,5.0)
         valores.add((id_pelicula,id_usuario,puntuacion))
@@ -148,6 +147,7 @@ min_duracion()
 print()
 print("------ APARTADO 3 ------")
 print()
+#Falta numero de nulos en columna duration tabla show
 f1,f2,f3,f4 = group_dataframe()
 print("----- Películas que duran más de 90 minutos o 90 minutos ----")
 print()
