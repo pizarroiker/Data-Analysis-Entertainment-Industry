@@ -56,6 +56,13 @@ def min_duracion():
     print("Mínima duración de una película: " + str(std_film)+ " minutos")
     print("Mínima duración de una serie: " + str(std_show) + " temporadas")
 
+def num_null():
+    con = sqlite3.connect("SI.db")
+    frase = "SELECT * FROM show"
+    df = pd.read_sql_query(frase, con)
+    n = df['duration'].isnull().sum()
+    print("Número de valores nulos en duration: "+str(n))
+    print()
 def group_dataframe():
     con = sqlite3.connect("SI.db")
     frase = "SELECT  * FROM show WHERE type = 'Movie' AND CAST(duration as integer) >= 90 "
@@ -73,7 +80,7 @@ def group_dataframe():
     return f1,f2,f3,f4
 
 def info_f(f):
-    print("Número de películas: "+str(f['duration'].shape[0]))
+    print("Número : "+str(f['duration'].shape[0]))
     print("Mediana: "+ str(f['duration'].median()))
     print("Media: " + str(round(f['duration'].mean(), 2)))
     print("Varianza: " + str(round(f['duration'].var(), 2)))
@@ -81,26 +88,10 @@ def info_f(f):
     print("Mínimo: " + str(f['duration'].min()))
 
 def tabla_usuarios():
-    conexion = sqlite3.connect("SI.db")
-    try:
-        conexion.execute("""create table usuarios (
-                                  id integer primary key autoincrement,
-                                  nombre text,
-                                  fecha text
-                            )""")
-        print("se creo la tabla usuarios")
-    except sqlite3.OperationalError:
-        print("La tabla usuarios ya existe")
-    conexion.execute("insert into usuarios(nombre,fecha) values (?,?)", ("Brais","16-09-2022"))
-    conexion.execute("insert into usuarios(nombre,fecha) values (?,?)", ("Iker", "16-03-2023"))
-    conexion.execute("insert into usuarios(nombre,fecha) values (?,?)", ("Javi", "16-06-2021"))
-    conexion.execute("insert into usuarios(nombre,fecha) values (?,?)", ("Eva", "16-01-2020"))
-    conexion.execute("insert into usuarios(nombre,fecha) values (?,?)", ("Alba", "16-11-2022"))
-    conexion.execute("insert into usuarios(nombre,fecha) values (?,?)", ("Sergio", "16-08-2022"))
-    conexion.execute("insert into usuarios(nombre,fecha) values (?,?)", ("Gabriel", "16-12-2020"))
-    conexion.execute("insert into usuarios(nombre,fecha) values (?,?)", ("Gustabo", "16-02-2023"))
-    conexion.execute("insert into usuarios(nombre,fecha) values (?,?)", ("Michelangelo", "16-07-2020"))
-    conexion.execute("insert into usuarios(nombre,fecha) values (?,?)", ("Octavio Bikes", "16-04-2021"))
+    con = sqlite3.connect("SI.db")
+    df = pd.read_csv("datos.csv", sep=',', header=0)
+    df.to_sql("user", con, schema=None, if_exists='replace', index=False)
+    con.commit()
 def tabla_visionados():
     conexion = sqlite3.connect("SI.db")
     try:
@@ -118,9 +109,9 @@ def introducir_visionados():
     conexion = sqlite3.connect("SI.db")
     cursor = conexion.cursor()
     valores = set()
-    while len(valores)<100:
+    while len(valores)<10000:
         id_pelicula = random.randint(1,8809)
-        id_usuario = random.randint(1, 10)
+        id_usuario = random.randint(1, 1000)
         puntuacion = random.uniform(0.0,5.0)
         valores.add((id_pelicula,id_usuario,puntuacion))
     for valor in valores:
@@ -147,7 +138,7 @@ min_duracion()
 print()
 print("------ APARTADO 3 ------")
 print()
-#Falta numero de nulos en columna duration tabla show
+num_null()
 f1,f2,f3,f4 = group_dataframe()
 print("----- Películas que duran más de 90 minutos o 90 minutos ----")
 print()
@@ -170,4 +161,3 @@ print()
 tabla_usuarios()
 tabla_visionados()
 introducir_visionados()
-graficos()
