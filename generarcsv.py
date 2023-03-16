@@ -20,5 +20,5 @@ for i in range(1000):
 # Escribir los datos en un archivo CSV
 with open("datos.csv", "w", newline="") as archivo_csv:
     writer = csv.writer(archivo_csv)
-    writer.writerow(["ID", "Nombre", "Ultima Fecha de Inicio de Sesion"])
+    writer.writerow(["id", "Nombre", "Ultima Fecha de Inicio de Sesion"])
     writer.writerows(rows)

@@ -3,6 +3,7 @@ import re
 import sqlite3
 import pandas as pd
 import numpy
+from matplotlib import pyplot as plt
 
 
 def createDataTable():
@@ -94,38 +95,90 @@ def tabla_usuarios():
     con.commit()
 def tabla_visionados():
     conexion = sqlite3.connect("SI.db")
-    try:
-        conexion.execute("""create table visionados(
-                                  id integer primary key autoincrement,
-                                  id_pelicula integer,
-                                  id_usuario integer,
-                                  puntuacion real
-                            )""")
-        print("se creo la tabla visionados")
-    except sqlite3.OperationalError:
-        print("La tabla visionados ya existe")
+    conexion.execute('''CREATE TABLE IF NOT EXISTS visionados
+             (id INTEGER PRIMARY KEY AUTOINCREMENT,
+             id_pelicula INTEGER NOT NULL,
+             id_usuario INTEGER NOT NULL,
+             puntuacion REAL,
+             FOREIGN KEY(id_pelicula) REFERENCES show(show_id),
+             FOREIGN KEY(id_usuario) REFERENCES user(id),
+             UNIQUE(id_pelicula, id_usuario))''')
+    print("se creo la tabla visionados")
 
 def introducir_visionados():
     conexion = sqlite3.connect("SI.db")
-    cursor = conexion.cursor()
     valores = set()
     while len(valores)<10000:
-        id_pelicula = random.randint(1,8809)
+        id_pelicula = 's'+str(random.randint(1,8809))
         id_usuario = random.randint(1, 1000)
         puntuacion = random.uniform(0.0,5.0)
         valores.add((id_pelicula,id_usuario,puntuacion))
-    for valor in valores:
-        consulta = "Select * from visionados where id_pelicula = ? and id_usuario = ? and puntuacion =  ? "
-        if cursor.execute(consulta,valor).fetchone() is None:
-            insercion = "insert into visionados(id_pelicula,id_usuario,puntuacion) values (?,?,?)"
-            cursor.execute(insercion,valor)
+    for (id_pelicula,id_usuario,puntuacion) in valores:
+        conexion.execute("INSERT OR IGNORE INTO visionados (id_pelicula, id_usuario, puntuacion) VALUES (?, ?, ?)", (id_pelicula, id_usuario, puntuacion))
+        conexion.commit()
     print("Entradas creadas")
 
 def graficos():
-    con = sqlite3.connect("SI.db")
-    frase = "SELECT  * FROM show WHERE type = 'Movie' AND CAST(duration as integer) >= 90 "
-    df = pd.read_sql_query(frase, con)
-    df.plot
+    # Conectar a la base de datos
+    conn = sqlite3.connect('SI.db')
+
+    # Consultar las películas con más visionados
+    query2 = '''
+    SELECT show.title,CAST(show.duration as integer) AS duration, COUNT(visionados.id_pelicula) AS num_visionados
+    FROM show
+    JOIN visionados ON show.show_id = visionados.id_pelicula
+    WHERE show.type='TV Show'
+    GROUP BY show.show_id
+    ORDER BY num_visionados DESC
+    LIMIT 10
+    '''
+    query = '''
+        SELECT show.title,CAST(show.duration as integer) AS duration, COUNT(visionados.id_pelicula) AS num_visionados
+        FROM show
+        JOIN visionados ON show.show_id = visionados.id_pelicula
+        WHERE show.type='Movie'
+        GROUP BY show.show_id
+        ORDER BY num_visionados DESC
+        LIMIT 10
+        '''
+    # Leer la consulta en un DataFrame
+    df = pd.read_sql_query(query, conn)
+    df2 = pd.read_sql_query(query2, conn)
+    # Representar en un gráfico de barras
+    df.plot(kind='bar', x='title', y='num_visionados', color='green')
+    plt.xlabel('Películas')
+    plt.ylabel('Número de visionados')
+    plt.title('Películas con más visionados')
+    plt.show()
+    # Representar en un gráfico de barras
+    df2.plot(kind='bar', x='title', y='num_visionados', color='green')
+    plt.xlabel('Series')
+    plt.ylabel('Número de visionados')
+    plt.title('Series con más visionados')
+    plt.show()
+
+    print(df2.columns)
+    df3 = df2[df2['duration']>2]
+    y1 = df3['duration'].mean()
+    df3 = df2[df2['duration'] <= 2]
+    y2 = df3['duration'].mean()
+    datos = [y1,y2]
+    tipos = ['series largas','series cortas']
+    plt.bar(tipos,datos)
+    plt.ylabel('Media')
+    plt.title('Comparacion medias')
+    plt.show()
+
+    df3 = df[df.duration > 90]
+    y1 = df3['duration'].mean()
+    df3 = df[df.duration <= 90]
+    y2 = df3['duration'].mean()
+    datos = [y1, y2]
+    tipos = ['peliculas largas', 'peliculas cortas']
+    plt.bar(tipos, datos)
+    plt.ylabel('Media')
+    plt.title('Comparacion medias')
+    plt.show()
 
 createDataTable()
 print()
@@ -160,4 +213,5 @@ print("------ APARTADO 4 y 5 ------")
 print()
 tabla_usuarios()
 tabla_visionados()
-introducir_visionados()
+#introducir_visionados()
+graficos()
