@@ -57,6 +57,14 @@ def min_duracion():
     print("Mínima duración de una película: " + str(std_film)+ " minutos")
     print("Mínima duración de una serie: " + str(std_show) + " temporadas")
 
+def anio():
+    con = sqlite3.connect("SI.db")
+    frase = "SELECT MAX(CAST(release_year as integer)) FROM show WHERE release_year IS NOT NULL"
+    frase2 = "SELECT MIN(CAST(release_year as integer)) FROM show WHERE release_year IS NOT NULL"
+    maxanio = pd.read_sql_query(frase, con).values[0][0]
+    minanio = pd.read_sql_query(frase2, con).values[0][0]
+    print("Año de publicación más reciente: " + str(maxanio) )
+    print("Año de publicación más antiguo: " + str(minanio) )
 def num_null():
     con = sqlite3.connect("SI.db")
     frase = "SELECT * FROM show"
@@ -188,6 +196,7 @@ med_duracion()
 des_duracion()
 max_duracion()
 min_duracion()
+anio()
 print()
 print("------ APARTADO 3 ------")
 print()
