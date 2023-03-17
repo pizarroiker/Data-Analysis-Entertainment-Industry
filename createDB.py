@@ -65,31 +65,39 @@ def anio():
     minanio = pd.read_sql_query(frase2, con).values[0][0]
     print("Año de publicación más reciente: " + str(maxanio) )
     print("Año de publicación más antiguo: " + str(minanio) )
-def num_null():
-    con = sqlite3.connect("SI.db")
-    frase = "SELECT * FROM show"
-    df = pd.read_sql_query(frase, con)
-    n = df['duration'].isnull().sum()
-    print("Número de valores nulos en duration: "+str(n))
-    print()
+
 def group_dataframe():
     con = sqlite3.connect("SI.db")
     frase = "SELECT  * FROM show WHERE type = 'Movie' AND CAST(duration as integer) >= 90 "
     frase2 = "SELECT  *  FROM show WHERE type = 'Movie' AND CAST(duration as integer) < 90 "
     frase3 = "SELECT  *  FROM show WHERE type = 'TV Show' AND CAST(duration as integer) > 2 "
     frase4 = "SELECT * FROM show WHERE type = 'TV Show' AND CAST(duration as integer) <= 2 "
+    frase5 = "SELECT  *  FROM show WHERE type = 'Movie'"
+    frase6 = "SELECT  *  FROM show WHERE type = 'TV Show'"
     f1 = pd.read_sql_query(frase, con)
     f2 = pd.read_sql_query(frase2, con)
     f3 = pd.read_sql_query(frase3, con)
     f4 = pd.read_sql_query(frase4, con)
+    f5 = pd.read_sql_query(frase5, con)
+    f6 = pd.read_sql_query(frase6, con)
     f1['duration'] = f1['duration'].apply(lambda x: re.sub('[^0-9]','',x)).astype(int)
     f2['duration'] = f2['duration'].apply(lambda x: re.sub('[^0-9]','', x)).astype(int)
     f3['duration'] = f3['duration'].apply(lambda x: re.sub('[^0-9]','', x)).astype(int)
     f4['duration'] = f4['duration'].apply(lambda x: re.sub('[^0-9]','', x)).astype(int)
-    return f1,f2,f3,f4
+    return f1,f2,f3,f4,f5,f6
 
 def info_f(f):
     print("Número : "+str(f['duration'].shape[0]))
+    print("Mediana: "+ str(f['duration'].median()))
+    print("Media: " + str(round(f['duration'].mean(), 2)))
+    print("Varianza: " + str(round(f['duration'].var(), 2)))
+    print("Máximo: " + str(f['duration'].max()))
+    print("Mínimo: " + str(f['duration'].min()))
+
+def info_p(f):
+    print("Número : "+str(f['duration'].shape[0]))
+    print("Valores nulos: "+str(f['duration'].isnull().sum()))
+    f['duration'] = f['duration'].dropna().apply(lambda x: re.sub('[^0-9]', '', x)).astype(int)
     print("Mediana: "+ str(f['duration'].median()))
     print("Media: " + str(round(f['duration'].mean(), 2)))
     print("Varianza: " + str(round(f['duration'].var(), 2)))
@@ -118,7 +126,7 @@ def introducir_visionados():
     valores = set()
     while len(valores)<10000:
         id_pelicula = 's'+str(random.randint(1,8809))
-        id_usuario = random.randint(1, 1000)
+        id_usuario = random.randint(1, 30)
         puntuacion = random.uniform(0.0,5.0)
         valores.add((id_pelicula,id_usuario,puntuacion))
     for (id_pelicula,id_usuario,puntuacion) in valores:
@@ -200,8 +208,15 @@ anio()
 print()
 print("------ APARTADO 3 ------")
 print()
-num_null()
-f1,f2,f3,f4 = group_dataframe()
+f1,f2,f3,f4,f5,f6 = group_dataframe()
+print("----- Películas  ----")
+print()
+info_p(f5)
+print()
+print("----- Series  ----")
+print()
+info_p(f6)
+print()
 print("----- Películas que duran más de 90 minutos o 90 minutos ----")
 print()
 info_f(f1)

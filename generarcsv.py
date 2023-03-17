@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 # Generar 1000 filas de datos aleatorios
 rows = []
-for i in range(1000):
+for i in range(30):
     # Generar un ID único
     id = i + 1
 
