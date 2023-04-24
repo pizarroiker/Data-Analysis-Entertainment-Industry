@@ -1,3 +1,4 @@
+import datetime
 import random
 import re
 import sqlite3
@@ -116,6 +117,8 @@ def tabla_visionados():
              id_pelicula INTEGER NOT NULL,
              id_usuario INTEGER NOT NULL,
              puntuacion REAL,
+             fecha DATE,
+             dispositivo TEXT,
              FOREIGN KEY(id_pelicula) REFERENCES show(show_id),
              FOREIGN KEY(id_usuario) REFERENCES user(id),
              UNIQUE(id_pelicula, id_usuario))''')
@@ -123,14 +126,20 @@ def tabla_visionados():
 
 def introducir_visionados():
     conexion = sqlite3.connect("SI.db")
+    min_date = datetime.date(2018, 1, 1)
+    max_date = datetime.date.today()
+    delta = max_date - min_date
+    d = ['movil','ordenador','television']
     valores = set()
-    while len(valores)<10000:
+    while len(valores)<100000:
         id_pelicula = 's'+str(random.randint(1,8809))
-        id_usuario = random.randint(1, 30)
+        id_usuario = random.randint(1, 10000)
         puntuacion = random.uniform(0.0,5.0)
-        valores.add((id_pelicula,id_usuario,puntuacion))
-    for (id_pelicula,id_usuario,puntuacion) in valores:
-        conexion.execute("INSERT OR IGNORE INTO visionados (id_pelicula, id_usuario, puntuacion) VALUES (?, ?, ?)", (id_pelicula, id_usuario, puntuacion))
+        fecha = min_date + datetime.timedelta(days=random.randint(0, delta.days))
+        dispositivo = d[random.randint(0,2)]
+        valores.add((id_pelicula,id_usuario,puntuacion,fecha,dispositivo))
+    for (id_pelicula,id_usuario,puntuacion,fecha,dispositivo) in valores:
+        conexion.execute("INSERT OR IGNORE INTO visionados (id_pelicula, id_usuario, puntuacion,fecha,dispositivo) VALUES (?, ?, ?,?,?)", (id_pelicula, id_usuario, puntuacion,fecha,dispositivo))
         conexion.commit()
     print("Entradas creadas")
 
@@ -237,5 +246,5 @@ print("------ APARTADO 4 y 5 ------")
 print()
 tabla_usuarios()
 tabla_visionados()
-#introducir_visionados()
+introducir_visionados()
 graficos()
