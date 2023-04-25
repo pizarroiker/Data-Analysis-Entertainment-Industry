@@ -118,10 +118,9 @@ def tabla_visionados():
              id_usuario INTEGER NOT NULL,
              puntuacion REAL,
              fecha DATE,
-             dispositivo TEXT,
+             dispositivo VARCHAR(4000),
              FOREIGN KEY(id_pelicula) REFERENCES show(show_id),
-             FOREIGN KEY(id_usuario) REFERENCES user(id),
-             UNIQUE(id_pelicula, id_usuario))''')
+             FOREIGN KEY(id_usuario) REFERENCES user(id))''')
     print("se creo la tabla visionados")
 
 def introducir_visionados():
@@ -133,7 +132,7 @@ def introducir_visionados():
     valores = set()
     while len(valores)<100000:
         id_pelicula = 's'+str(random.randint(1,8809))
-        id_usuario = random.randint(1, 10000)
+        id_usuario = random.randint(1, 1000)
         puntuacion = random.uniform(0.0,5.0)
         fecha = min_date + datetime.timedelta(days=random.randint(0, delta.days))
         dispositivo = d[random.randint(0,2)]
@@ -246,5 +245,5 @@ print("------ APARTADO 4 y 5 ------")
 print()
 tabla_usuarios()
 tabla_visionados()
-introducir_visionados()
+#introducir_visionados()
 graficos()

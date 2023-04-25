@@ -9,7 +9,7 @@ cursor = conn.cursor()
 # Comando SQL para crear la base de datos y sus tablas
 cursor.execute("""
     CREATE TABLE IF NOT EXISTS articulo (
-        id           INTEGER NOT NULL,
+        id           VARCHAR(4000),
         type         VARCHAR(4000),
         title        VARCHAR(4000),
         director     VARCHAR(4000),
@@ -21,6 +21,15 @@ cursor.execute("""
         duration     VARCHAR(4000),
         listed_in    VARCHAR(4000),
         description  VARCHAR(4000),
+        PRIMARY KEY  (id)
+    )
+""")
+
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS usuario (
+        id           VARCHAR(4000),
+        nombre         VARCHAR(4000),
+        fecha_inicio        DATE,
         PRIMARY KEY  (id)
     )
 """)
