@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 countries = ["Spain", "Germany", "France", "Japan", "USA"]
 # Generar 1000 filas de datos aleatorios
 rows = []
-for i in range(500):
+for i in range(300):
     # Generar un ID único
     id = i + 1
 

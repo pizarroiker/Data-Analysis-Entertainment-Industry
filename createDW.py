@@ -1,6 +1,5 @@
-from datetime import datetime, date
+from datetime import datetime
 import sqlite3
-
 import pandas as pd
 
 # Conexión a la base de datos transaccional y al almacen
@@ -58,13 +57,14 @@ cursor_dw.execute("""
 cursor_dw.execute("""
     CREATE TABLE IF NOT EXISTS visualizaciones (
         id          INTEGER PRIMARY KEY AUTOINCREMENT,
+        show_id     VARCHAR(2000),
+        user_id     INTEGER NOT NULL,
         tiempo_id   INTEGER NOT NULL,
-        tipo_id     INTEGER NOT NULL,
-        articulo_id INTEGER NOT NULL,
-        amount      NUMBER,
-        FOREIGN KEY (articulo_id) REFERENCES articulo (id),
+        count       INTEGER,
+        avg_rating  NUMBER,
+        FOREIGN KEY (show_id) REFERENCES articulo (id),
         FOREIGN KEY (tiempo_id) REFERENCES tiempo (id),
-        FOREIGN KEY (tipo_id) REFERENCES tipo (id)
+        FOREIGN KEY (user_id) REFERENCES usuario (id)
     )
 """)
 
@@ -113,6 +113,7 @@ df.drop('date', axis=1, inplace=True)
 
 print(df)
 
+df.to_sql('visualizaciones',con_dw,if_exists='append',index=False)
 
 
 # Cierre de conexiones a las bases de datos
