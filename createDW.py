@@ -1,3 +1,4 @@
+from datetime import datetime, date
 import sqlite3
 
 import pandas as pd
@@ -14,7 +15,7 @@ cursor_db = con_db.cursor()
 
 cursor_dw.execute("""
     CREATE TABLE IF NOT EXISTS articulo (
-        id           VARCHAR(4000),
+        show_id           VARCHAR(4000),
         type         VARCHAR(4000),
         title        VARCHAR(4000),
         director     VARCHAR(4000),
@@ -26,7 +27,7 @@ cursor_dw.execute("""
         duration     VARCHAR(4000),
         listed_in    VARCHAR(4000),
         description  VARCHAR(4000),
-        PRIMARY KEY  (id)
+        PRIMARY KEY  (show_id)
     )
 """)
 
@@ -35,9 +36,9 @@ cursor_dw.execute("""
 cursor_dw.execute("""
     CREATE TABLE IF NOT EXISTS usuario (
         id           INTEGER,
-        nombre         VARCHAR(4000),
-        fecha_inicio        DATE,
-        pais            VARCHAR(4000),
+        name         VARCHAR(4000),
+        login_date        DATE,
+        country            VARCHAR(4000),
         PRIMARY KEY  (id)
     )
 """)
@@ -56,12 +57,11 @@ cursor_dw.execute("""
 
 cursor_dw.execute("""
     CREATE TABLE IF NOT EXISTS visualizaciones (
-        id          INTEGER NOT NULL,
+        id          INTEGER PRIMARY KEY AUTOINCREMENT,
         tiempo_id   INTEGER NOT NULL,
         tipo_id     INTEGER NOT NULL,
         articulo_id INTEGER NOT NULL,
         amount      NUMBER,
-        PRIMARY KEY (id),
         FOREIGN KEY (articulo_id) REFERENCES articulo (id),
         FOREIGN KEY (tiempo_id) REFERENCES tiempo (id),
         FOREIGN KEY (tipo_id) REFERENCES tipo (id)
@@ -77,13 +77,43 @@ for year in range(2018, 2024):
 # Contrucción tabla usuarios
 
 query = "SELECT  *  FROM user"
-f1 = pd.read_sql_query(query, con_db)
-for _ in f1:
-    cursor_dw.execute("INSERT INTO usuario (id, nombre, fecha_inicio, pais) VALUES (?, ?, ?, ?)",_)
+df = pd.read_sql_query(query, con_db)
+df.to_sql('usuario',con_dw,if_exists='append',index=False)
 
 # Contrucción tabla artículos
 
-#cursor_db.execute("SELECT  *  FROM show")
+query = "SELECT  *  FROM show"
+df = pd.read_sql_query(query, con_db)
+df.to_sql('articulo',con_dw,if_exists='append',index=False)
+
+# Contrucción tabla de hechos (visualizaciones)
+query = "SELECT show_id, user_id, date, COUNT(*) as count, AVG(rating) as avg_rating FROM views GROUP BY show_id, " \
+        "user_id, date"
+df = pd.read_sql_query(query, con_db)
+
+# Define la función para calcular el número de tiempo
+def to_time_num(date_str):
+    # Convertir la fecha en string a un objeto datetime
+    date = datetime.strptime(date_str, '%Y-%m-%d').date()
+
+    # Obtener el año y mes de la fecha
+    year = date.year
+    month = date.month
+
+    # Calcular el número de tiempo correspondiente a la fecha
+    time_num = (year - 2018) * 12 + month
+
+    return time_num
+
+# Aplica la función a la columna de fechas y almacena los resultados en una nueva columna
+df['tiempo_id'] = df['date'].apply(to_time_num)
+
+# Elimina la columna de fechas original
+df.drop('date', axis=1, inplace=True)
+
+print(df)
+
+
 
 # Cierre de conexiones a las bases de datos
 
