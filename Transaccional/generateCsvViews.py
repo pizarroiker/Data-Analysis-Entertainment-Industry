@@ -32,7 +32,7 @@ for i in range(10000):
     rows.append([None, show_id, user_id, rating, date])
 
 # Escribir a un archivo CSV
-with open('visionados.csv', 'w', newline='') as file:
+with open('views.csv', 'w', newline='') as file:
     writer = csv.writer(file)
-    writer.writerow(['id', 'id_pelicula', 'id_usuario', 'puntuacion', 'fecha'])
+    writer.writerow(['id', 'show_id', 'user_id', 'rating', 'date'])
     writer.writerows(rows)
