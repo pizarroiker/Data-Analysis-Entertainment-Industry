@@ -9,7 +9,7 @@ from matplotlib import pyplot as plt
 
 def createDataTable():
     con = sqlite3.connect("SI.db")
-    df = pd.read_csv("netflix_titles.csv",sep = ';', header=0)
+    df = pd.read_csv("netflix_titles.csv", sep =';', header=0)
     df.to_sql("show", con, schema = None, if_exists= 'replace', index = False)
     con.commit()
 
@@ -107,7 +107,7 @@ def info_p(f):
 
 def tabla_usuarios():
     con = sqlite3.connect("SI.db")
-    df = pd.read_csv("datos.csv", sep=',', header=0)
+    df = pd.read_csv("users.csv", sep=',', header=0)
     df.to_sql("user", con, schema=None, if_exists='replace', index=False)
     con.commit()
 def tabla_visionados():

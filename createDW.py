@@ -30,6 +30,7 @@ cursor.execute("""
         id           VARCHAR(4000),
         nombre         VARCHAR(4000),
         fecha_inicio        DATE,
+        pais            VARCHAR(4000),
         PRIMARY KEY  (id)
     )
 """)
@@ -39,13 +40,6 @@ cursor.execute("""
         id    INTEGER PRIMARY KEY AUTOINCREMENT,
         month INTEGER,
         year  INTEGER
-    )
-""")
-
-cursor.execute("""
-    CREATE TABLE IF NOT EXISTS tipo (
-        id     INTEGER PRIMARY KEY AUTOINCREMENT,
-        device VARCHAR(4000)
     )
 """)
 
@@ -62,11 +56,6 @@ cursor.execute("""
         FOREIGN KEY (tipo_id) REFERENCES tipo (id)
     )
 """)
-
-# Construccion tabla tipo
-cursor.execute("INSERT INTO tipo (device) VALUES ('movil')")
-cursor.execute("INSERT INTO tipo (device) VALUES ('ordenador')")
-cursor.execute("INSERT INTO tipo (device) VALUES ('television')")
 
 # Contruccion tabla tiempo
 for year in range(2018, 2024):
