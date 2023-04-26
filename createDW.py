@@ -1,13 +1,18 @@
 import sqlite3
 
-# Conexión a la base de datos
-conn = sqlite3.connect('DW.db')
+import pandas as pd
 
-# Cursor para ejecutar comandos SQL
-cursor = conn.cursor()
+# Conexión a la base de datos transaccional y al almacen
+con_dw = sqlite3.connect('DW.db')
+con_db = sqlite3.connect('DB.db')
 
-# Comando SQL para crear la base de datos y sus tablas
-cursor.execute("""
+# Cursor para ejecutar comandos SQL en ambos
+cursor_dw = con_dw.cursor()
+cursor_db = con_db.cursor()
+
+# Creación de la tabla artículo en el almacen de datos
+
+cursor_dw.execute("""
     CREATE TABLE IF NOT EXISTS articulo (
         id           VARCHAR(4000),
         type         VARCHAR(4000),
@@ -25,9 +30,11 @@ cursor.execute("""
     )
 """)
 
-cursor.execute("""
+# Creación de la tabla usuario en el almacen de datos
+
+cursor_dw.execute("""
     CREATE TABLE IF NOT EXISTS usuario (
-        id           VARCHAR(4000),
+        id           INTEGER,
         nombre         VARCHAR(4000),
         fecha_inicio        DATE,
         pais            VARCHAR(4000),
@@ -35,7 +42,9 @@ cursor.execute("""
     )
 """)
 
-cursor.execute("""
+# Creación de la tabla tiempo en el almacen de datos
+
+cursor_dw.execute("""
     CREATE TABLE IF NOT EXISTS tiempo (
         id    INTEGER PRIMARY KEY AUTOINCREMENT,
         month INTEGER,
@@ -43,7 +52,9 @@ cursor.execute("""
     )
 """)
 
-cursor.execute("""
+# Creación de la tabla de hechos (visualizaciones) en el almacen de datos
+
+cursor_dw.execute("""
     CREATE TABLE IF NOT EXISTS visualizaciones (
         id          INTEGER NOT NULL,
         tiempo_id   INTEGER NOT NULL,
@@ -57,10 +68,24 @@ cursor.execute("""
     )
 """)
 
-# Contruccion tabla tiempo
+# Contrucción tabla tiempo
+
 for year in range(2018, 2024):
     for month in range(1, 13):
-        cursor.execute("INSERT INTO tiempo (month, year) VALUES (?, ?)", (month, year))
+        cursor_dw.execute("INSERT INTO tiempo (month, year) VALUES (?, ?)", (month, year))
 
-# Cierre de conexión a la base de datos
-conn.close()
+# Contrucción tabla usuarios
+
+query = "SELECT  *  FROM user"
+f1 = pd.read_sql_query(query, con_db)
+for _ in f1:
+    cursor_dw.execute("INSERT INTO usuario (id, nombre, fecha_inicio, pais) VALUES (?, ?, ?, ?)",_)
+
+# Contrucción tabla artículos
+
+#cursor_db.execute("SELECT  *  FROM show")
+
+# Cierre de conexiones a las bases de datos
+
+con_dw.close()
+con_db.close()

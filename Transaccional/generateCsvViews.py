@@ -28,7 +28,7 @@ for i in range(10000):
     user_id = random.choice(users)
     date = dates[i]
     rating = random.choice(ratings)
-    rows.append([None, show_id, user_id, rating, date])
+    rows.append([i, show_id, user_id, rating, date])
 
 # Manipulating DATA for later Data Mining
 
@@ -38,11 +38,12 @@ ratings = np.arange(5, 10.1, 0.1).round(1).tolist()
 # Adding to rows
 
 for i in range(100):
+    id = i+10000
     show_id = random.choice(shows)
     user_id = random.choice(users)
-    date = dates[i+10000]
+    date = dates[id]
     rating = random.choice(ratings)
-    rows.append([None, show_id, user_id, rating, date])
+    rows.append([id, show_id, user_id, rating, date])
 
 # Building csv with the data in rows
 
