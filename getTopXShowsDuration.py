@@ -1,22 +1,8 @@
 import sqlite3
 import pandas as pd
 
-# Consulta SQL para obtener el top X de visualizaciones de un tipo de show específico
-def get_top_x_shows(show_type, x):
-    conn = sqlite3.connect('DW.db')
-    query = f"""
-            SELECT s.title, COUNT(*) as num_views
-            FROM visualizaciones v
-            JOIN articulo s ON v.show_id = s.show_id
-            WHERE s.type = '{show_type}'
-            GROUP BY s.title
-            ORDER BY num_views DESC
-            LIMIT {x}
-        """
-    df = pd.read_sql_query(query, conn)
-    return df
-
-def get_top_x_shows2(show_type, x, duration):
+# Consulta SQL para obtener el top X de visualizaciones de un tipo de show y duracion específicos
+def get_top_x_shows(show_type, x, duration):
     conn = sqlite3.connect('DW.db')
     if show_type == 'Movie':
         query = f"""
@@ -84,6 +70,6 @@ elif tipo == 'TV Show':
             else:
                 duration = '3'
 
-result = get_top_x_shows2(tipo, top, duration)
+result = get_top_x_shows(tipo, top, duration)
 print(result)
 

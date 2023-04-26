@@ -14,7 +14,7 @@ cursor_db = con_db.cursor()
 
 cursor_dw.execute("""
     CREATE TABLE IF NOT EXISTS articulo (
-        show_id           VARCHAR(4000),
+        show_id      VARCHAR(4000),
         type         VARCHAR(4000),
         title        VARCHAR(4000),
         director     VARCHAR(4000),
@@ -36,8 +36,8 @@ cursor_dw.execute("""
     CREATE TABLE IF NOT EXISTS usuario (
         id           INTEGER,
         name         VARCHAR(4000),
-        login_date        DATE,
-        country            VARCHAR(4000),
+        login_date   DATE,
+        country      VARCHAR(4000),
         PRIMARY KEY  (id)
     )
 """)
@@ -87,6 +87,7 @@ df = pd.read_sql_query(query, con_db)
 df.to_sql('articulo',con_dw,if_exists='append',index=False)
 
 # Contrucción tabla de hechos (visualizaciones)
+
 query = "SELECT show_id, user_id, date, COUNT(*) as count, AVG(rating) as avg_rating FROM views GROUP BY show_id, " \
         "user_id, date"
 df = pd.read_sql_query(query, con_db)
@@ -111,7 +112,7 @@ df['tiempo_id'] = df['date'].apply(to_time_num)
 # Elimina la columna de fechas original
 df.drop('date', axis=1, inplace=True)
 
-print(df)
+# Cargamos mediante el dataframe la tabla de hechos
 
 df.to_sql('visualizaciones',con_dw,if_exists='append',index=False)
 
