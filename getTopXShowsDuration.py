@@ -61,17 +61,14 @@ if tipo == 'Movie':
                 print('Respuesta inválida. Por favor, ingrese s o n.')
 elif tipo == 'TV Show':
         while duration not in ['1', '2', '3']:
-            duration = input('¿Cuántas temporadas desea incluir? (1, 2, 3+): ')
-            if duration not in ['1', '2', '3+']:
+            print()
+            print('Advertencia: El 3 busca las series con 3 o más temporadas.')
+            duration = input('¿Cuántas temporadas desea incluir? (1, 2, 3): ')
+            if duration not in ['1', '2', '3']:
                 print('Respuesta inválida. Por favor, ingrese 1, 2 o 3+.')
-            if duration == '1':
-                duration = '1'
-            elif duration == '2':
-                duration = '2'
-            else:
-                duration = '3'
 
-# Obtenemos el resultado del SLICE & DICE y lo imprimimos
+
+# Obtenemos el resultado del SLICE & DICE y el ROLL y lo imprimimos
 
 result = get_top_x_shows(tipo, top, duration)
 print(result)
