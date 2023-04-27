@@ -48,7 +48,8 @@ cursor_dw.execute("""
     CREATE TABLE IF NOT EXISTS tiempo (
         id    INTEGER PRIMARY KEY AUTOINCREMENT,
         month INTEGER,
-        year  INTEGER
+        year  INTEGER,
+        UNIQUE (month, year)
     )
 """)
 
@@ -81,13 +82,13 @@ for month in range(1, 5):
 
 query = "SELECT  *  FROM user"
 df = pd.read_sql_query(query, con_db)
-df.to_sql('usuario',con_dw,if_exists='append',index=False)
+df.to_sql('usuario',con_dw,if_exists='replace',index=False)
 
 # Contrucción tabla artículos (Desde el transaccional al almacen, pasamos la tabla entera)
 
 query = "SELECT  *  FROM show"
 df = pd.read_sql_query(query, con_db)
-df.to_sql('articulo',con_dw,if_exists='append',index=False)
+df.to_sql('articulo',con_dw,if_exists='replace',index=False)
 
 # Contrucción tabla de hechos (visualizaciones)
 
@@ -121,7 +122,7 @@ df = df.rename(columns={'date': 'tiempo_id'})
 
 # Cargamos mediante el dataframe la tabla de hechos
 
-df.to_sql('visualizaciones',con_dw,if_exists='append',index=False)
+df.to_sql('visualizaciones',con_dw,if_exists='replace',index=False)
 
 
 # Cierre de conexiones a las bases de datos
