@@ -48,6 +48,7 @@ while tipo not in tipos:
 top = int(input('Ingrese el número de elementos del top deseado: '))
 
 # Duration Selection
+
 duration = ''
 if tipo == 'Movie':
         while duration not in ['Over 90 min', 'Less or equal to 90 min']:
@@ -69,6 +70,8 @@ elif tipo == 'TV Show':
                 duration = '2'
             else:
                 duration = '3'
+
+# Obtenemos el resultado del SLICE & DICE y lo imprimimos
 
 result = get_top_x_shows(tipo, top, duration)
 print(result)

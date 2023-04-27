@@ -33,6 +33,7 @@ while tipo not in tipos:
 top = int(input('Ingrese el número de elementos del top deseado: '))
 
 
+# Obtenemos el resultado del SLICE & DICE y lo imprimimos
 
 result = get_top_x_shows(tipo, top)
 print(result)
