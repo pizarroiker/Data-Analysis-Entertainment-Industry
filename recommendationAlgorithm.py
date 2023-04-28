@@ -10,7 +10,7 @@ df_visualizaciones = pd.read_sql_query("SELECT * FROM visualizaciones", conn)
 # Crea la matriz de usuarios por elementos vistos (Usamos la operación OLAP Pivot)
 matriz_usuarios_elementos = pd.pivot_table(df_visualizaciones, values='avg_rating', index='user_id', columns='show_id')
 
-def recomendar_programas(usuario, matriz_usuarios_elementos, n=10):
+def recomendar_programas(usuario, matriz_usuarios_elementos, n):
 
     # Calcula la similitud del coseno entre los usuarios
     matriz_usuarios_elementos = matriz_usuarios_elementos.fillna(0)
