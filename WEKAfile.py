@@ -13,16 +13,26 @@ query = '''
 '''
 
 # Lectura del resultado en un dataframe
-df_usuario = pd.read_sql(query, conn)
-df_usuario.to_csv('wekadata.csv', index=False)
+df = pd.read_sql(query, conn)
 
-df = pd.read_csv('wekadata.csv')
+
+# Convierte el DataFrame de Pandas a un archivo ARFF
 with open('wekadata.arff', 'w') as f:
-    f.write('@relation wekadata\n\n')
+    f.write('@relation nombre_del_archivo\n\n')
     # Escribe los nombres de las columnas como atributos
     for col in df.columns:
-        f.write('@attribute ' + col + ' numeric\n')
+        if df[col].dtype == 'object':
+            unique_values = list(set(df[col].tolist()))
+            f.write('@attribute ' + col + ' {' + ','.join(unique_values) + '}\n')
+        else:
+            f.write('@attribute ' + col + ' numeric\n')
     f.write('\n@data\n')
     # Escribe los datos de cada fila en el archivo
     for i, row in df.iterrows():
-        f.write(','.join([str(x) for x in row.values]) + '\n')
+        values = []
+        for col in df.columns:
+            if df[col].dtype == 'object':
+                values.append("'" + str(row[col]) + "'")
+            else:
+                values.append(str(row[col]))
+        f.write(','.join(values) + '\n')
