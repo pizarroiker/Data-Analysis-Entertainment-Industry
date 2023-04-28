@@ -6,7 +6,7 @@ conn = sqlite3.connect('DW.db')
 
 # Consulta para obtener los datos de visualización y usuario_id
 query = '''
-    SELECT usuario.*, COUNT(visualizaciones.user_id) as num_visualizaciones, AVG(visualizaciones.avg_rating) as media_valoraciones
+    SELECT usuario.id, usuario.country, COUNT(visualizaciones.user_id) as num_visualizaciones, AVG(visualizaciones.avg_rating) as media_valoraciones
     FROM usuario
     LEFT JOIN visualizaciones ON usuario.id = visualizaciones.user_id
     GROUP BY usuario.id
@@ -14,7 +14,7 @@ query = '''
 
 # Lectura del resultado en un dataframe
 df = pd.read_sql(query, conn)
-
+print(df)
 
 # Convierte el DataFrame de Pandas a un archivo ARFF
 with open('wekadata.arff', 'w') as f:
