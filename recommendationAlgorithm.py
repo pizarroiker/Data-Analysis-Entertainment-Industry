@@ -14,7 +14,7 @@ def recomendar_programas(usuario, matriz_usuarios_elementos, n):
 
     # Calcula la similitud del coseno entre los usuarios
     matriz_usuarios_elementos = matriz_usuarios_elementos.fillna(0)
-    similitud_usuarios = 1 - pairwise_distances(matriz_usuarios_elementos, metric='euclidean')
+    similitud_usuarios = 1 - pairwise_distances(matriz_usuarios_elementos, metric='cosine')
 
     # Encuentra los usuarios más similares
     indices_usuarios = matriz_usuarios_elementos.index
