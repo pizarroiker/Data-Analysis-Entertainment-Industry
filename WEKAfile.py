@@ -23,7 +23,10 @@ with open('wekadata.arff', 'w') as f:
     for col in df.columns:
         if df[col].dtype == 'object':
             unique_values = list(set(df[col].tolist()))
-            f.write('@attribute ' + col + ' {' + ','.join(unique_values) + '}\n')
+            if col == "country":
+                f.write('@class ' + col + ' {' + ','.join(unique_values) + '}\n')
+            else:
+                f.write('@attribute ' + col + ' {' + ','.join(unique_values) + '}\n')
         else:
             f.write('@attribute ' + col + ' numeric\n')
     f.write('\n@data\n')

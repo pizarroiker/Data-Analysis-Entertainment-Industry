@@ -1,7 +1,7 @@
 @relation nombre_del_archivo
 
 @attribute id numeric
-@attribute country {Germany,USA,France,Spain,Japan}
+@class country {France,Japan,Germany,USA,Spain}
 @attribute num_visualizaciones numeric
 @attribute media_valoraciones numeric
 
