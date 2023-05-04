@@ -18,7 +18,7 @@ df = df.fillna('')
 df = df.replace('\n', ' ', regex=True)
 
 # Convertir a un número
-df['duration'] = pd.to_numeric(df['duration'], errors='coerce')
+df['duration'] = pd.to_numeric(df['duration'], errors='coerce').fillna(0)
 df['media_usuarios'] = pd.to_numeric(df['media_usuarios'], errors='coerce').fillna(0)
 
 # Crear columnas para cada tipo de show en listed_in
@@ -53,7 +53,7 @@ with open('shows_data.arff', 'w', encoding='utf-8') as f:
             if col == "class":
                 f.write('@attribute ' + col + ' {' + ','.join(filter(None, unique_values)) + '}\n')
             else:
-                f.write('@attribute "' + col + '" {' + ','.join(filter(None, unique_values)) + '}\n')
+                f.write('@attribute "' + col + '" {"' + '","'.join(filter(None, unique_values)) + '"}\n')
         else:
             f.write('@attribute "' + col + '" numeric\n')
     f.write('\n@data\n')
