@@ -5,7 +5,7 @@ import sqlite3
 conn = sqlite3.connect('DW.db')
 
 # Consulta para obtener los datos de visualización y usuario_id
-query = '''SELECT articulo.type,articulo.director,articulo.country,articulo.release_year,CAST(articulo.duration as 
+query = '''SELECT articulo.type,articulo.director,articulo.country,articulo.release_year,articulo.listed_in,CAST(articulo.duration as 
 integer) as duration, COUNT(visualizaciones.show_id) as num_visualizaciones, 
 AVG(visualizaciones.avg_rating) as media_usuarios FROM articulo LEFT JOIN visualizaciones ON articulo.show_id = 
 visualizaciones.show_id GROUP BY articulo.show_id'''
