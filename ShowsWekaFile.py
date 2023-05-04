@@ -60,3 +60,5 @@ with open('shows_data.arff', 'w', encoding='utf-8') as f:
             else:
                 values.append(str(row[col]))
         f.write(','.join(values) + '\n')
+
+
