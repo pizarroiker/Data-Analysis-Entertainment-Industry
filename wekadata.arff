@@ -1,3 +1,0 @@
-@relation nombre_del_archivo
-
-@attribute type {TV Show,Movie}
