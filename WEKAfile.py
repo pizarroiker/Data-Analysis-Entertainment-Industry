@@ -6,10 +6,10 @@ conn = sqlite3.connect('DW.db')
 
 # Consulta para obtener los datos de visualización y usuario_id
 query = '''
-    SELECT usuario.id, usuario.country, COUNT(visualizaciones.user_id) as num_visualizaciones, AVG(visualizaciones.avg_rating) as media_valoraciones
-    FROM usuario
-    LEFT JOIN visualizaciones ON usuario.id = visualizaciones.user_id
-    GROUP BY usuario.id
+    SELECT articulo.type,articulo.director,articulo.country,articulo.release_year,articulo.duration,articulo.rating, COUNT(visualizaciones.show_id) as num_visualizaciones, AVG(visualizaciones.avg_rating) as media_usuarios
+    FROM articulo
+    LEFT JOIN visualizaciones ON articulo.show_id = visualizaciones.show_id
+    GROUP BY articulo.show_id
 '''
 
 # Lectura del resultado en un dataframe
@@ -23,7 +23,7 @@ with open('wekadata.arff', 'w') as f:
     for col in df.columns:
         if df[col].dtype == 'object':
             unique_values = list(set(df[col].tolist()))
-            if col == "country":
+            if col == "class":
                 f.write('@class ' + col + ' {' + ','.join(unique_values) + '}\n')
             else:
                 f.write('@attribute ' + col + ' {' + ','.join(unique_values) + '}\n')
