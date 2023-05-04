@@ -16,6 +16,10 @@ query = '''
 df = pd.read_sql(query, conn)
 print(df)
 
+# Añadir atributo class {buena(>7),mala(<4),media(resto)} mediante el rating
+
+# Limpiar datos para poder crear el archivo correctamente
+
 # Convierte el DataFrame de Pandas a un archivo ARFF
 with open('wekadata.arff', 'w') as f:
     f.write('@relation nombre_del_archivo\n\n')
