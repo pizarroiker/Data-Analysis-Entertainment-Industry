@@ -15,10 +15,17 @@ df = pd.read_sql(query, conn)
 
 # Convertir valores NaN a strings
 df = df.fillna('')
+df = df.replace('\n', ' ', regex=True)
 
 # Convertir a un número
 df['duration'] = pd.to_numeric(df['duration'], errors='coerce')
 df['media_usuarios'] = pd.to_numeric(df['media_usuarios'], errors='coerce').fillna(0)
+
+# Crear columnas para cada tipo de show en listed_in
+
+df_listed_in = df['listed_in'].str.get_dummies(',')
+df = pd.concat([df, df_listed_in], axis=1)
+df = df.drop('listed_in', axis=1)
 
 # Añadir atributo class {buena(>7),mala(<4),media(resto)} mediante el rating
 
@@ -28,13 +35,15 @@ df.loc[(df['media_usuarios'] >= 4) & (df['media_usuarios'] <= 7), 'class'] = 'me
 
 df = df.drop('media_usuarios', axis=1)
 
+
+
 # Convierte el DataFrame de Pandas a un archivo ARFF
 with open('shows_data.arff', 'w', encoding='utf-8') as f:
-    f.write('@relation nombre_del_archivo\n\n')
+    f.write('@relation shows_data\n\n')
     # Escribe los nombres de las columnas como atributos
     for col in df.columns:
         if df[col].dtype == 'object':
-            unique_values = [str(x) if x is not None else 'missing' for x in set(df[col].tolist())]
+            unique_values = [str(x) if x is not None else '' for x in set(df[col].tolist())]
             if col == "class":
                 f.write('@class ' + col + ' {' + ','.join(filter(None, unique_values)) + '}\n')
             else:
