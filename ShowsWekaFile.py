@@ -22,14 +22,14 @@ df['duration'] = pd.to_numeric(df['duration'], errors='coerce')
 df['media_usuarios'] = pd.to_numeric(df['media_usuarios'], errors='coerce').fillna(0)
 
 # Crear columnas para cada tipo de show en listed_in
-
-df_listed_in = df['listed_in'].str.get_dummies(',')
+df['listed_in'] = df['listed_in'].str.strip()
+df_listed_in = df['listed_in'].str.get_dummies(', ')
 df = pd.concat([df, df_listed_in], axis=1)
 df = df.drop('listed_in', axis=1)
 
 # Crear columnas para cada pais en country
-
-df_listed_in = df['country'].str.get_dummies(',')
+df['country'] = df['country'].str.strip()
+df_listed_in = df['country'].str.get_dummies(', ')
 df = pd.concat([df, df_listed_in], axis=1)
 df = df.drop('country', axis=1)
 
@@ -51,11 +51,11 @@ with open('shows_data.arff', 'w', encoding='utf-8') as f:
         if df[col].dtype == 'object':
             unique_values = [str(x) if x is not None else '' for x in set(df[col].tolist())]
             if col == "class":
-                f.write('@class ' + col + ' {' + ','.join(filter(None, unique_values)) + '}\n')
+                f.write('@class "' + col + '" {' + ','.join(filter(None, unique_values)) + '}\n')
             else:
-                f.write('@attribute ' + col + ' {' + ','.join(filter(None, unique_values)) + '}\n')
+                f.write('@attribute "' + col + '" {' + ','.join(filter(None, unique_values)) + '}\n')
         else:
-            f.write('@attribute ' + col + ' numeric\n')
+            f.write('@attribute "' + col + '" numeric\n')
     f.write('\n@data\n')
     # Escribe los datos de cada fila en el archivo
     for i, row in df.iterrows():
