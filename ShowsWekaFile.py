@@ -5,7 +5,7 @@ import sqlite3
 conn = sqlite3.connect('DW.db')
 
 # Consulta para obtener los datos de visualización y usuario_id
-query = '''SELECT articulo.type,articulo.director,articulo.country,articulo.release_year,articulo.listed_in,CAST(articulo.duration as 
+query = '''SELECT articulo.type,articulo.country,articulo.release_year,articulo.listed_in,CAST(articulo.duration as 
 integer) as duration, COUNT(visualizaciones.show_id) as num_visualizaciones, 
 AVG(visualizaciones.avg_rating) as media_usuarios FROM articulo LEFT JOIN visualizaciones ON articulo.show_id = 
 visualizaciones.show_id GROUP BY articulo.show_id'''
@@ -26,6 +26,12 @@ df['media_usuarios'] = pd.to_numeric(df['media_usuarios'], errors='coerce').fill
 df_listed_in = df['listed_in'].str.get_dummies(',')
 df = pd.concat([df, df_listed_in], axis=1)
 df = df.drop('listed_in', axis=1)
+
+# Crear columnas para cada pais en country
+
+df_listed_in = df['country'].str.get_dummies(',')
+df = pd.concat([df, df_listed_in], axis=1)
+df = df.drop('country', axis=1)
 
 # Añadir atributo class {buena(>7),mala(<4),media(resto)} mediante el rating
 
