@@ -51,7 +51,7 @@ with open('shows_data.arff', 'w', encoding='utf-8') as f:
         if df[col].dtype == 'object':
             unique_values = [str(x) if x is not None else '' for x in set(df[col].tolist())]
             if col == "class":
-                f.write('@class "' + col + '" {' + ','.join(filter(None, unique_values)) + '}\n')
+                f.write('@attribute ' + col + ' {' + ','.join(filter(None, unique_values)) + '}\n')
             else:
                 f.write('@attribute "' + col + '" {' + ','.join(filter(None, unique_values)) + '}\n')
         else:
