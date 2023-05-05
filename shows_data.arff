@@ -1,6 +1,6 @@
 @relation shows_data
 
-@attribute "type" {"Movie","TV Show"}
+@attribute "type" {"TV Show","Movie"}
 @attribute "release_year" numeric
 @attribute "duration" numeric
 @attribute "num_visualizaciones" numeric

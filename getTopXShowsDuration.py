@@ -68,7 +68,8 @@ elif tipo == 'TV Show':
                 print('Respuesta inválida. Por favor, ingrese 1, 2 o 3+.')
 
 
-# Obtenemos el resultado del SLICE & DICE y el ROLL y lo imprimimos
+# Obtenemos el resultado del SLICE & DICE en un
+# data frame e imprimimos el resultado
 
 result = get_top_x_shows(tipo, top, duration)
 print(result)
