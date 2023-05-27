@@ -165,11 +165,11 @@ In line with our visual and comprehensible approach, we have extended the use of
 
 In the final stage of this analysis, I compared content by duration, focusing on movies. To do so, I calculated the average number of views for movies with a duration of more than 90 minutes and the average number of views for movies with a duration of less than 90 minutes.
 
-![Average Type of Movies](images/Average Movies.png)
+![Average Type of Movies](images/Average-Movies.png)
 
 I have done the same for TV Shows, comparing the average viewings of those with 2 or less seasons with those with more than 2 seasons.
 
-![Average Type of TV Shows](images/Average Shows.png)
+![Average Type of TV Shows](images/Average_Shows.png)
 
 
 ## Data Warehouse
