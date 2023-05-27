@@ -88,7 +88,7 @@ Returning to the previous dataframes, we have performed on each one a series of 
 | Minimum | 3.0   | 
 
 | TV Shows |
-| -------------- | 
+| ------- | ------- | 
 | Length | 2676   | 
 | Null Values | 0   |
 | Median | 1.0  | 
