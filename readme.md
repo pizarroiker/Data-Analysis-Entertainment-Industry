@@ -77,7 +77,7 @@ Returning to the previous dataframes, we have performed on each one a series of 
 
 #### Type of Content
 
-| Movies |
+| |Movies |
 | --------------- | 
 | Length | 6131   | 
 | Null Values | 3      |
@@ -87,8 +87,8 @@ Returning to the previous dataframes, we have performed on each one a series of 
 | Maximum | 312.0 | 
 | Minimum | 3.0   | 
 
-| TV Shows |
-| ------- | ------- | 
+| |TV Shows |
+| -------------- | 
 | Length | 2676   | 
 | Null Values | 0   |
 | Median | 1.0  | 
