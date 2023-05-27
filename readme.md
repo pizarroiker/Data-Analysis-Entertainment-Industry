@@ -15,3 +15,21 @@ In summary, throughout this personal project I have created an information syste
 - Develop a Balanced Scorecard (BSC) to support business decision making.
 
 This project has been an opportunity to autonomously apply the theoretical concepts learned and get a more practical view of their application in a business context.
+
+## Process modeling
+
+So far, I have started by modeling the business process I have been tasked with on this project. The business process focuses on the decision to produce a series or movie when a scriptwriter submits a proposal. To visualize and represent this process, I created a UML diagram that shows all the stages and the interactions between the different actors involved.
+
+Here is the resulting UML diagram:
+
+![UML](images/UML.png) 
+
+On the other hand, the resulting BPMN diagram is:
+
+![BPMN](images/BPMN.png) 
+
+Both diagrams accurately captures the workflow and key activities necessary to evaluate the writer's proposal and make an informed decision. It provides a clear and concise view of the steps involved, from script review to financial evaluation and final decision making.
+
+## Creation of a management information system
+
+
