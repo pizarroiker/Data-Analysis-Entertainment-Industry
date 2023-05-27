@@ -48,7 +48,8 @@ Once all the users were generated, I proceeded to randomly generate the users vi
 
 ### Database queries and statistics
 
-**FILE: **[Report](https://github.com/pizarroiker/SI-P1/blob/master/Transaccional/report.txt)
+####FILE: 
+[Report](https://github.com/pizarroiker/SI-P1/blob/master/Transaccional/report.txt)
 
 The first thing I did was to divide the shows table into a series of dataframes. The importance of this work lies in the organization's need to analyze and make decisions based on relevant and segmented information. For this, I classified the data into movies and series. Then, I grouped series by number of seasons and movies by length. This has made a certain section of the report much easier to perform. After doing this, the program will create an html report where we will show statistics of the show table and the dataframes mentioned above.
 
@@ -70,8 +71,6 @@ These calculations were implemented using SQL queries and we used functions from
 | Minimum TV show duration | 1 seasons  | 
 | Most recent year of publication | 2021   | 
 | Oldest year of publication | 1925 |
-
-These results could provide the organization important information about the distribution and temporal range of the analyzed data, which allows us to move forward in the project with a better understanding of the situation.
 
 Returning to the previous dataframes, we have performed on each one a series of operations to obtain statistical data for each one. As before, all these data have been compiled in the report. Tables with the results obtained are shown below.
 
@@ -136,3 +135,7 @@ Returning to the previous dataframes, we have performed on each one a series of 
 | Var | 0.15  |
 | Maximum | 2 |
 | Minimum | 1   | 
+
+These results could provide the organization important information about the distribution and temporal range of the analyzed data, which allows us to move forward in the project with a better understanding of the situation.
+
+### Plots
