@@ -49,7 +49,7 @@ def num_samples(con,f):
             "release_year NOT NULL AND rating NOT NULL AND duration NOT NULL AND listed_in NOT NULL AND " \
             "description NOT NULL and 'cast' NOT NULL"
     tam = pd.read_sql_query(frase,con).values[0][0]
-    f.write("\nNumber of complete samples (without missing values): " + str(tam)+"\n")
+    f.write("<tr>\n <td>Number of complete samples (without missing values)</td>\n <td>"+str(tam)+"</td>\n </tr>\n")
 
 # Writes on the file the average duration of TV shows and movies
 def med_duration(con,f):
@@ -57,8 +57,8 @@ def med_duration(con,f):
     query2 = "SELECT AVG(duration) FROM show WHERE type = 'TV Show' AND duration IS NOT NULL"
     med_film = pd.read_sql_query(query, con).values[0][0]
     med_show = pd.read_sql_query(query2, con).values[0][0]
-    f.write("Average duration (Movies): " + str(round(med_film))+ " minutes\n")
-    f.write("Average duration (TV Shows): " + str(round(med_show)) + " seasons\n")
+    f.write("<tr>\n <td>Average duration (Movies)</td>\n <td>" + str(round(med_film))+ " minutes" + "</td>\n </tr>\n")
+    f.write("<tr>\n <td>Average duration (TV Shows)</td>\n <td>" + str(round(med_show)) + " seasons" + "</td>\n </tr>\n")
 
 # Writes on the file the standard deviation of duration from TV shows and movies
 def des_duration(con,f):
@@ -66,8 +66,8 @@ def des_duration(con,f):
     query2 = "SELECT AVG(duration * duration) - AVG(duration) * AVG(duration) FROM show WHERE type = 'TV Show' AND duration IS NOT NULL"
     std_film = pd.read_sql_query(query, con).values[0][0] ** 0.5
     std_show = pd.read_sql_query(query2, con).values[0][0] ** 0.5
-    f.write("Standard deviation of duration (Movies): " + str(round(std_film, 2))+"\n")
-    f.write("Standard deviation of duration (TV Shows): " + str(round(std_show, 2))+"\n")
+    f.write("<tr>\n <td>Standard deviation of duration (Movies)</td>\n <td>" + str(round(std_film, 2)) + "</td>\n </tr>\n")
+    f.write("<tr>\n <td>Standard deviation of duration (TV Shows)</td>\n <td>" + str(round(std_show, 2)) + "</td>\n </tr>\n")
 
 # Writes on the file the maximum duration of TV shows and movies
 def max_duration(con,f):
@@ -75,8 +75,8 @@ def max_duration(con,f):
     query2 = "SELECT MAX(CAST(duration as integer)) FROM show WHERE type = 'TV Show' AND duration IS NOT NULL"
     std_film = pd.read_sql_query(query, con).values[0][0]
     std_show = pd.read_sql_query(query2, con).values[0][0]
-    f.write("Maximum Movie duration: " + str(std_film)+ " minutes\n")
-    f.write("Maximum TV show duration: " + str(std_show) + " seasons\n")
+    f.write("<tr>\n <td>Maximum Movie duration</td>\n <td>" + str(std_film)+ " minutes" + "</td>\n </tr>\n")
+    f.write("<tr>\n <td>Maximum TV show duration</td>\n <td>" + str(std_show)+ " seasons" + "</td>\n </tr>\n")
 
 # Writes on the file the minimum duration of TV shows and movies
 def min_duration(con,f):
@@ -84,8 +84,8 @@ def min_duration(con,f):
     query2 = "SELECT MIN(CAST(duration as integer)) FROM show WHERE type = 'TV Show' AND duration IS NOT NULL"
     std_film = pd.read_sql_query(query, con).values[0][0]
     std_show = pd.read_sql_query(query2, con).values[0][0]
-    f.write("Minimum Movie duration: " + str(std_film)+ " minutes\n")
-    f.write("Minimum TV show duration: " + str(std_show) + " seasons\n")
+    f.write("<tr>\n <td>Minimum Movie duration</td>\n <td>" + str(std_film) + " minutes" + "</td>\n </tr>\n")
+    f.write("<tr>\n <td>Minimum TV show duration</td>\n <td>" + str(std_show) + " seasons" + "</td>\n </tr>\n")
 
 # Writes on the file the oldest and the most recent year of publication
 def year(con,f):
@@ -93,28 +93,32 @@ def year(con,f):
     query2 = "SELECT MIN(CAST(release_year as integer)) FROM show WHERE release_year IS NOT NULL"
     last_year = pd.read_sql_query(query, con).values[0][0]
     first_year = pd.read_sql_query(query2, con).values[0][0]
-    f.write("Most recent year of publication: " + str(last_year)+"\n")
-    f.write("Oldest year of publication: " + str(first_year)+"\n")
+    f.write("<tr>\n <td>Most recent year of publication</td>\n <td>" + str(last_year) + "</td>\n </tr>\n")
+    f.write("<tr>\n <td>Oldest year of publication</td>\n <td>" + str(first_year) +"</td>\n </tr>\n")
 
 # Writes on the file statistical data of the dataframe duration
 def info_f(d,f):
-    f.write("\nLength : "+str(d['duration'].shape[0])+"\n")
-    f.write("Median: "+ str(d['duration'].median())+"\n")
-    f.write("Mean: " + str(round(d['duration'].mean(), 2))+"\n")
-    f.write("Var: " + str(round(d['duration'].var(), 2))+"\n")
-    f.write("Maximum: " + str(d['duration'].max())+"\n")
-    f.write("Minimum: " + str(d['duration'].min())+"\n")
+    f.write("<table>\n<tr>\n<th>Statistic</th>\n<th>Value</th>\n</tr>\n")
+    f.write("<tr>\n <td>Length</td>\n <td>" + str(d['duration'].shape[0]) + "</td>\n </tr>\n")
+    f.write("<tr>\n <td>Median</td>\n <td>" + str(d['duration'].median()) + "</td>\n </tr>\n")
+    f.write("<tr>\n <td>Mean</td>\n <td>" + str(round(d['duration'].mean(), 2)) + "</td>\n </tr>\n")
+    f.write("<tr>\n <td>Var</td>\n <td>" + str(round(d['duration'].var(), 2)) + "</td>\n </tr>\n")
+    f.write("<tr>\n <td>Maximum</td>\n <td>" + str(d['duration'].max()) + "</td>\n </tr>\n")
+    f.write("<tr>\n <td>Minimum</td>\n <td>" + str(d['duration'].min()) + "</td>\n </tr>\n")
+    f.write("</table>\n")
 
 # Writes on the file statistical data of the dataframe duration including null values count
 def info_p(d,f):
-    f.write("\nLength : "+str(d['duration'].shape[0])+"\n")
-    f.write("Null Values: "+str(d['duration'].isnull().sum())+"\n")
+    f.write("<table>\n<tr>\n<th>Statistic</th>\n<th>Value</th>\n</tr>\n")
+    f.write("<tr>\n <td>Length</td>\n <td>" + str(d['duration'].shape[0]) + "</td>\n </tr>\n")
+    f.write("<tr>\n <td>Null Values</td>\n <td>" + str(d['duration'].isnull().sum()) + "</td>\n </tr>\n")
     d['duration'] = d['duration'].dropna().apply(lambda x: re.sub('[^0-9]', '', x)).astype(int)
-    f.write("Median: "+ str(d['duration'].median())+"\n")
-    f.write("Mean: " + str(round(d['duration'].mean(), 2))+"\n")
-    f.write("Var: " + str(round(d['duration'].var(), 2))+"\n")
-    f.write("Maximum: " + str(d['duration'].max())+"\n")
-    f.write("Minimum: " + str(d['duration'].min())+"\n")
+    f.write("<tr>\n <td>Median</td>\n <td>" + str(d['duration'].median()) + "</td>\n </tr>\n")
+    f.write("<tr>\n <td>Mean</td>\n <td>" + str(round(d['duration'].mean(), 2)) + "</td>\n </tr>\n")
+    f.write("<tr>\n <td>Var</td>\n <td>" + str(round(d['duration'].var(), 2)) + "</td>\n </tr>\n")
+    f.write("<tr>\n <td>Maximum</td>\n <td>" + str(d['duration'].max()) + "</td>\n </tr>\n")
+    f.write("<tr>\n <td>Minimum</td>\n <td>" + str(d['duration'].min()) + "</td>\n </tr>\n")
+    f.write("</table>\n")
 
 # Creates the plots
 def plots(con):
@@ -188,27 +192,69 @@ if __name__ == "__main__" :
     # Split into dataframes
     d1, d2, d3, d4, d5, d6 = group_dataframe(con)
     # Create the report
-    with open('report.txt', 'w') as file:
-        file.write("\n------ Duration and age of audiovisual content ------\n")
+    html_start = '''
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1 {
+    text-align: center;
+    color: #333;
+    }
+
+    table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    }
+
+    table, th, td {
+    border: 1px solid #333;
+    padding: 8px;
+    }
+
+    th {
+    background-color: #333;
+    color: #fff;
+    }
+
+    </style>
+    </head>
+    <body>
+    '''
+    html_end= ''' 
+    </body>
+    </html>
+    '''
+    with open('report.html', 'w') as file:
+        file.write(html_start)
+        file.write("\n<h1>Duration and age of audiovisual content</h1>\n")
+        file.write("<table>\n <tr>\n <th>Statistic</th>\n <th>Result</th>\n </tr>\n")
         num_samples(con,file)
         med_duration(con,file)
         des_duration(con,file)
         max_duration(con,file)
         min_duration(con,file)
         year(con,file)
-        file.write("\n------ Statistical data of each group ------\n")
-        file.write("\n------ Movies ------\n")
+        file.write("</table>\n")
+        file.write("<h1>Statistical data of each group</h1>\n")
+        file.write("<h2>Movies</h2>\n")
         info_p(d5,file)
-        file.write("\n------ TV Shows ------\n")
+        file.write("<h2>TV Shows</h2>\n")
         info_p(d6,file)
-        file.write("\n----- Movies that are longer than 90 minutes or 90 minutes long ----\n")
+        file.write("<h2> Movies that are longer than 90 minutes or 90 minutes long</h2>\n")
         info_f(d1,file)
-        file.write("\n----- Movies that last less than 90 minutes ----\n")
+        file.write("<h2> Movies that last less than 90 minutes</h2>\n")
         info_f(d2,file)
-        file.write("\n----- TV Shows that last more than 2 seasons -----\n")
+        file.write("<h2> TV Shows that last more than 2 seasons</h2>\n")
         info_f(d3,file)
-        file.write("\n----- TV Shows that last 2 seasons or less -----\n")
+        file.write("<h2> TV Shows that last 2 seasons or less</h2>\n")
         info_f(d4,file)
+        file.write(html_end)
     # Create the plots
     plots(con)
     # Close Connection
