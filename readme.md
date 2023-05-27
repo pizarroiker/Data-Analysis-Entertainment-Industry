@@ -77,25 +77,16 @@ Returning to the previous dataframes, we have performed on each one a series of 
 
 #### Type of Content
 
-| | Movies |
-| ------- | -------- | 
-| Length | 6131   | 
-| Null Values | 3      |
-| Median | 98.0  | 
-| Mean | 99.58   | 
-| Var | 800.36  | 
-| Maximum | 312.0 | 
-| Minimum | 3.0   | 
+| | Movies |                                                        | | TV Shows |
+| ------- | -------- |                                              | ------- | ------- | 
+| Length | 6131   |                                                 | Length | 2676   | 
+| Null Values | 3      |                                            | Null Values | 0   |
+| Median | 98.0  |                                                  | Median | 1.0  | 
+| Mean | 99.58   |                                                  | Mean | 1.76   |
+| Var | 800.36  |                                                   | Var | 2.51  | 
+| Maximum | 312.0 |                                                 | Maximum | 17 | 
+| Minimum | 3.0   |                                                 | Minimum | 1   | 
 
-| | TV Shows |
-| ------- | ------- | 
-| Length | 2676   | 
-| Null Values | 0   |
-| Median | 1.0  | 
-| Mean | 1.76   | 
-| Var | 2.51  | 
-| Maximum | 17 | 
-| Minimum | 1   | 
 
 
 
