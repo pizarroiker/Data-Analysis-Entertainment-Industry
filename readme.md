@@ -48,6 +48,28 @@ Once all the users were generated, I proceeded to randomly generate the users vi
 
 ### Database queries and statistics
 
-The first thing I did was to divide the shows table into a series of dataframes. The importance of this work lies in the organization's need to analyze and make decisions based on relevant and segmented information. For this, I classified the data into movies and series. Then, I grouped series by number of seasons and movies by length. This has made a certain section of the report much easier to perform.
+*FILE: *[Report](https://github.com/pizarroiker/SI-P1/blob/master/Transaccional/report.txt)
 
+The first thing I did was to divide the shows table into a series of dataframes. The importance of this work lies in the organization's need to analyze and make decisions based on relevant and segmented information. For this, I classified the data into movies and series. Then, I grouped series by number of seasons and movies by length. This has made a certain section of the report much easier to perform. After doing this, the program will create an html report where we will show statistics of the show table and the dataframes mentioned above.
+
+I performed several calculations to obtain relevant information about the data. First, I calculated the number of available samples, considering those entries that had no empty fields. In addition, I determined the maximum and minimum value of the launch year. I used the launch date as a reference and filtered out those empty fields to avoid problems with null values. This gave us a clear idea about the temporal distribution of the analyzed data. Continuing with the analysis, I focused on the duration values. For both movies and series, we performed specific calculations. I filtered out the null duration values as I considered that these values were not relevant and could affect the final results.
+
+These calculations were implemented using SQL queries and we used functions from the pandas library to manipulate and process the data efficiently. These are the results reflected in the report:
+
+
+| Query                     | Result                           | 
+| ------------------------- | --------------------------------- | 
+| Number of complete samples (without missing values)   | 5747   | 
+| Average duration (Movies)      | 100 minutes       |
+| Average duration (TV Shows) | 2 seasons  | 
+| Standard deviation of duration (Movies) | 28.29   | 
+| Standard deviation of duration (TV Shows) | 1.58   | 
+| Maximum Movie duration | 312 minutes  | 
+| Maximum TV show duration | 17 seasons   | 
+| Minimum Movie duration | 3 minutes |
+| Minimum TV show duration | 1 seasons  | 
+| Most recent year of publication | 2021   | 
+| Oldest year of publication | 1925 |
+
+These results provide us with important information about the distribution and temporal range of the analyzed data, which allows us to move forward in the project with a better understanding of the situation.
 
