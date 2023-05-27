@@ -75,7 +75,9 @@ These calculations were implemented using SQL queries and we used functions from
 
 Returning to the previous dataframes, we have performed on each one a series of operations to obtain statistical data for each one. As before, all these data have been compiled in the report. Tables with the results obtained are shown below.
 
+
 #### Type of Content
+
 
 | | Movies |              
 | ------- | -------- |
@@ -87,6 +89,7 @@ Returning to the previous dataframes, we have performed on each one a series of 
 | Maximum | 312.0 |   
 | Minimum | 3.0   |   
 
+
 | | TV Shows |
 | ------- | ------- | 
 | Length | 2676   | 
@@ -97,7 +100,9 @@ Returning to the previous dataframes, we have performed on each one a series of 
 | Maximum | 17 |
 | Minimum | 1   | 
 
+
 #### Type of Movie
+
 
 | | Movies that are longer than 90 minutes or 90 minutes long |              
 | ------- | -------- |
@@ -108,6 +113,7 @@ Returning to the previous dataframes, we have performed on each one a series of 
 | Maximum | 312 |   
 | Minimum | 90   |   
 
+
 | | Movies that last less than 90 minutes |
 | ------- | ------- | 
 | Length | 1838   | 
@@ -117,7 +123,9 @@ Returning to the previous dataframes, we have performed on each one a series of 
 | Maximum | 89 |
 | Minimum | 3   | 
 
+
 #### Type of TV Show
+
 
 | | TV Shows that last more than 2 seasons |              
 | ------- | -------- |
@@ -127,6 +135,7 @@ Returning to the previous dataframes, we have performed on each one a series of 
 | Var | 4.59 |  
 | Maximum | 17 |   
 | Minimum | 3 |   
+
 
 | | TV Shows that last 2 seasons or less |
 | ------- | ------- | 
@@ -139,5 +148,28 @@ Returning to the previous dataframes, we have performed on each one a series of 
 
 These results could provide the organization important information about the distribution and temporal range of the analyzed data, which allows us to move forward in the project with a better understanding of the situation.
 
+
 ### Plots
 
+At this stage of the project, I have recognized the importance of presenting the information in a visual and easily understandable way. To achieve this, I have chosen to use bar charts, which allow a clear and concise visualization of the data.
+
+By using bar charts, we are prioritizing clarity and ease of understanding the data. This allows us to effectively communicate the results of the analysis and provide an overview of the most popular movies in terms of views.
+
+One of the first graphs created is the top 10 most viewed movies. This bar chart shows in an orderly and hierarchical way the movies that have been most viewed, allowing us to quickly identify which are the most popular. This visual approach facilitates the interpretation of the information and helps most people to understand it in a simple way.
+
+[FOTO GRAFICO]
+
+In line with our visual and comprehensible approach, we have extended the use of bar charts to represent the top 10 most viewed series. This new chart allows us to clearly and concisely visualize the most popular series in terms of number of views.
+
+[FOTO GRAFICO 2]
+
+In the final stage of this analysis, I compared content by duration, focusing on movies. To do so, I calculated the average number of views for movies with a duration of more than 90 minutes and the average number of views for movies with a duration of less than 90 minutes.
+
+[FOTO GRAFICO 3]
+
+I have done the same for TV Shows, comparing the average viewings of those with 2 or less seasons with those with more than 2 seasons.
+
+[FOTO GRAFICO 4]
+
+
+## Data Warehouse
