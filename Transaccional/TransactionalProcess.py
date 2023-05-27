@@ -233,7 +233,7 @@ if __name__ == "__main__" :
     with open('report.html', 'w') as file:
         file.write(html_start)
         file.write("\n<h1>Duration and age of audiovisual content</h1>\n")
-        file.write("<table>\n <tr>\n <th>Statistic</th>\n <th>Result</th>\n </tr>\n")
+        file.write("<table>\n <tr>\n <th>Statistic</th>\n <th>Value</th>\n </tr>\n")
         num_samples(con,file)
         med_duration(con,file)
         des_duration(con,file)
