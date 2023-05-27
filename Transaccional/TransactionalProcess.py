@@ -4,21 +4,25 @@ import sqlite3
 import pandas as pd
 from matplotlib import pyplot as plt
 
-
+#Creates Shows Table
 def table_show(con):
     df = pd.read_csv("CSV/netflix_titles.csv", sep =';', header=0)
     df.to_sql("show", con, schema = None, if_exists= 'replace', index = False)
     con.commit()
 
+#Creates Users Table
 def tabla_users(con):
     df = pd.read_csv("CSV/users.csv", sep=',', header=0)
     df.to_sql("user", con, schema=None, if_exists='replace', index=False)
     con.commit()
+
+#Creates Views Table
 def tabla_views(con):
     df = pd.read_csv("CSV/views.csv", sep=',', header=0)
     df.to_sql("views", con, schema=None, if_exists='replace', index=False)
     con.commit()
 
+#Split Shows Table into Dataframes (TV Series, Shows, TV Series 2 or less seasons, TV Series 3 or more seasons....)
 def group_dataframe(con):
     query = "SELECT  * FROM show WHERE type = 'Movie' AND CAST(duration as integer) >= 90 "
     query2 = "SELECT  *  FROM show WHERE type = 'Movie' AND CAST(duration as integer) < 90 "
@@ -37,6 +41,8 @@ def group_dataframe(con):
     f3['duration'] = f3['duration'].apply(lambda x: re.sub('[^0-9]','', x)).astype(int)
     f4['duration'] = f4['duration'].apply(lambda x: re.sub('[^0-9]','', x)).astype(int)
     return f1,f2,f3,f4,f5,f6
+
+# Writes on the file the number of samples without missing values
 def num_samples(con,f):
     frase = "SELECT COUNT(*) FROM show WHERE show_id IS NOT NULL AND type IS NOT NULL AND title IS NOT NULL AND " \
             "director IS NOT NULL AND country NOT NULL AND date_added NOT NULL AND " \
@@ -45,38 +51,43 @@ def num_samples(con,f):
     tam = pd.read_sql_query(frase,con).values[0][0]
     f.write("\nNumber of complete samples (without missing values): " + str(tam)+"\n")
 
-def med_duracion(con,f):
+# Writes on the file the average duration of TV shows and movies
+def med_duration(con,f):
     query = "SELECT AVG(duration) FROM show WHERE type = 'Movie' AND duration IS NOT NULL"
     query2 = "SELECT AVG(duration) FROM show WHERE type = 'TV Show' AND duration IS NOT NULL"
     med_film = pd.read_sql_query(query, con).values[0][0]
     med_show = pd.read_sql_query(query2, con).values[0][0]
-    f.write("Average length (movies): " + str(round(med_film))+ " minutes\n")
-    f.write("Average length (TV Shows): " + str(round(med_show)) + " seasons\n")
+    f.write("Average duration (Movies): " + str(round(med_film))+ " minutes\n")
+    f.write("Average duration (TV Shows): " + str(round(med_show)) + " seasons\n")
 
-def des_duracion(con,f):
+# Writes on the file the standard deviation of duration from TV shows and movies
+def des_duration(con,f):
     query = "SELECT AVG(duration * duration) - AVG(duration) * AVG(duration) FROM show WHERE type = 'Movie' AND duration IS NOT NULL"
     query2 = "SELECT AVG(duration * duration) - AVG(duration) * AVG(duration) FROM show WHERE type = 'TV Show' AND duration IS NOT NULL"
     std_film = pd.read_sql_query(query, con).values[0][0] ** 0.5
     std_show = pd.read_sql_query(query2, con).values[0][0] ** 0.5
-    f.write("Standard deviation of duration (movies): " + str(round(std_film, 2))+"\n")
+    f.write("Standard deviation of duration (Movies): " + str(round(std_film, 2))+"\n")
     f.write("Standard deviation of duration (TV Shows): " + str(round(std_show, 2))+"\n")
 
-def max_duracion(con,f):
+# Writes on the file the maximum duration of TV shows and movies
+def max_duration(con,f):
     query = "SELECT MAX(CAST(duration as integer)) FROM show WHERE type = 'Movie' AND duration IS NOT NULL"
     query2 = "SELECT MAX(CAST(duration as integer)) FROM show WHERE type = 'TV Show' AND duration IS NOT NULL"
     std_film = pd.read_sql_query(query, con).values[0][0]
     std_show = pd.read_sql_query(query2, con).values[0][0]
-    f.write("Maximum movie length: " + str(std_film)+ " minutes\n")
-    f.write("Maximum TV show length: " + str(std_show) + " seasons\n")
+    f.write("Maximum Movie duration: " + str(std_film)+ " minutes\n")
+    f.write("Maximum TV show duration: " + str(std_show) + " seasons\n")
 
-def min_duracion(con,f):
+# Writes on the file the minimum duration of TV shows and movies
+def min_duration(con,f):
     query = "SELECT MIN(CAST(duration as integer)) FROM show WHERE type = 'Movie' AND duration IS NOT NULL"
     query2 = "SELECT MIN(CAST(duration as integer)) FROM show WHERE type = 'TV Show' AND duration IS NOT NULL"
     std_film = pd.read_sql_query(query, con).values[0][0]
     std_show = pd.read_sql_query(query2, con).values[0][0]
-    f.write("Minimum movie length: " + str(std_film)+ " minutes\n")
-    f.write("Minimum TV show length: " + str(std_show) + " seasons\n")
+    f.write("Minimum Movie duration: " + str(std_film)+ " minutes\n")
+    f.write("Minimum TV show duration: " + str(std_show) + " seasons\n")
 
+# Writes on the file the oldest and the most recent year of publication
 def year(con,f):
     query = "SELECT MAX(CAST(release_year as integer)) FROM show WHERE release_year IS NOT NULL"
     query2 = "SELECT MIN(CAST(release_year as integer)) FROM show WHERE release_year IS NOT NULL"
@@ -85,6 +96,7 @@ def year(con,f):
     f.write("Most recent year of publication: " + str(last_year)+"\n")
     f.write("Oldest year of publication: " + str(first_year)+"\n")
 
+# Writes on the file statistical data of the dataframe duration
 def info_f(d,f):
     f.write("\nLength : "+str(d['duration'].shape[0])+"\n")
     f.write("Median: "+ str(d['duration'].median())+"\n")
@@ -93,6 +105,7 @@ def info_f(d,f):
     f.write("Maximum: " + str(d['duration'].max())+"\n")
     f.write("Minimum: " + str(d['duration'].min())+"\n")
 
+# Writes on the file statistical data of the dataframe duration including null values count
 def info_p(d,f):
     f.write("\nLength : "+str(d['duration'].shape[0])+"\n")
     f.write("Null Values: "+str(d['duration'].isnull().sum())+"\n")
@@ -103,7 +116,7 @@ def info_p(d,f):
     f.write("Maximum: " + str(d['duration'].max())+"\n")
     f.write("Minimum: " + str(d['duration'].min())+"\n")
 
-
+# Creates the plots
 def plots(con):
 
 
@@ -164,19 +177,24 @@ def plots(con):
     plt.title('Comparison of averages')
     plt.show()
 
+# MAIN
 if __name__ == "__main__" :
+    # Connect to database
     con = sqlite3.connect("../DDBB/TransactionalDatabase.db")
+    # Create database
     table_show(con)
     tabla_users(con)
     tabla_views(con)
+    # Split into dataframes
     d1, d2, d3, d4, d5, d6 = group_dataframe(con)
+    # Create the report
     with open('report.txt', 'w') as file:
         file.write("\n------ Duration and age of audiovisual content ------\n")
         num_samples(con,file)
-        med_duracion(con,file)
-        des_duracion(con,file)
-        max_duracion(con,file)
-        min_duracion(con,file)
+        med_duration(con,file)
+        des_duration(con,file)
+        max_duration(con,file)
+        min_duration(con,file)
         year(con,file)
         file.write("\n------ Statistical data of each group ------\n")
         file.write("\n------ Movies ------\n")
@@ -191,5 +209,7 @@ if __name__ == "__main__" :
         info_f(d3,file)
         file.write("\n----- TV Shows that last 2 seasons or less -----\n")
         info_f(d4,file)
+    # Create the plots
     plots(con)
+    # Close Connection
     con.close()

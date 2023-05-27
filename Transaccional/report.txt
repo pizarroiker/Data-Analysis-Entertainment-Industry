@@ -2,14 +2,14 @@
 ------ Duration and age of audiovisual content ------
 
 Number of complete samples (without missing values): 5747
-Average length (movies): 100 minutes
-Average length (TV Shows): 2 seasons
-Standard deviation of duration (movies): 28.29
+Average duration (Movies): 100 minutes
+Average duration (TV Shows): 2 seasons
+Standard deviation of duration (Movies): 28.29
 Standard deviation of duration (TV Shows): 1.58
-Maximum movie length: 312 minutes
-Maximum TV show length: 17 seasons
-Minimum movie length: 3 minutes
-Minimum TV show length: 1 seasons
+Maximum Movie duration: 312 minutes
+Maximum TV show duration: 17 seasons
+Minimum Movie duration: 3 minutes
+Minimum TV show duration: 1 seasons
 Most recent year of publication: 2021
 Oldest year of publication: 1925
 
