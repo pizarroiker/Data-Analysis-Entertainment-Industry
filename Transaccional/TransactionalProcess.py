@@ -170,7 +170,7 @@ if __name__ == "__main__" :
     tabla_users(con)
     tabla_views(con)
     d1, d2, d3, d4, d5, d6 = group_dataframe(con)
-    with open('informe.txt', 'w') as file:
+    with open('report.txt', 'w') as file:
         file.write("\n------ Duration and age of audiovisual content ------\n")
         num_samples(con,file)
         med_duracion(con,file)

@@ -1,0 +1,72 @@
+
+------ Duration and age of audiovisual content ------
+
+Number of complete samples (without missing values): 5747
+Average length (movies): 100 minutes
+Average length (TV Shows): 2 seasons
+Standard deviation of duration (movies): 28.29
+Standard deviation of duration (TV Shows): 1.58
+Maximum movie length: 312 minutes
+Maximum TV show length: 17 seasons
+Minimum movie length: 3 minutes
+Minimum TV show length: 1 seasons
+Most recent year of publication: 2021
+Oldest year of publication: 1925
+
+------ Statistical data of each group ------
+
+------ Movies ------
+
+Length : 6131
+Null Values: 3
+Median: 98.0
+Mean: 99.58
+Var: 800.36
+Maximum: 312.0
+Minimum: 3.0
+
+------ TV Shows ------
+
+Length : 2676
+Null Values: 0
+Median: 1.0
+Mean: 1.76
+Var: 2.51
+Maximum: 17
+Minimum: 1
+
+----- Movies that are longer than 90 minutes or 90 minutes long ----
+
+Length : 4290
+Median: 107.0
+Mean: 112.45
+Var: 434.69
+Maximum: 312
+Minimum: 90
+
+----- Movies that last less than 90 minutes ----
+
+Length : 1838
+Median: 76.0
+Mean: 69.53
+Var: 364.24
+Maximum: 89
+Minimum: 3
+
+----- TV Shows that last more than 2 seasons -----
+
+Length : 458
+Median: 4.0
+Mean: 4.54
+Var: 4.59
+Maximum: 17
+Minimum: 3
+
+----- TV Shows that last 2 seasons or less -----
+
+Length : 2218
+Median: 1.0
+Mean: 1.19
+Var: 0.15
+Maximum: 2
+Minimum: 1
