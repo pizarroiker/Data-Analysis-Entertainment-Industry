@@ -6,7 +6,7 @@ import numpy as np
 
 # Connection to database
 
-con = sqlite3.connect("SI.db")
+con = sqlite3.connect("../../DDBB/TransactionalDatabase.db")
 cursor = con.cursor()
 
 # Data for further randomization
