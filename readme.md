@@ -96,3 +96,43 @@ Returning to the previous dataframes, we have performed on each one a series of 
 | Var | 2.51  |
 | Maximum | 17 |
 | Minimum | 1   | 
+
+#### Type of Movie
+
+| | Movies that are longer than 90 minutes or 90 minutes long |              
+| ------- | -------- |
+| Length | 4290   |          
+| Median | 107.0  |     
+| Mean | 112.45   |   
+| Var | 434.69  |  
+| Maximum | 312 |   
+| Minimum | 90   |   
+
+| | Movies that last less than 90 minutes |
+| ------- | ------- | 
+| Length | 1838   | 
+| Median | 76.0  |
+| Mean | 69.53   |
+| Var | 364.24  |
+| Maximum | 89 |
+| Minimum | 3   | 
+
+#### Type of TV Show
+
+| | TV Shows that last more than 2 seasons |              
+| ------- | -------- |
+| Length | 458   |        
+| Median | 4.0  |     
+| Mean | 4.54   |   
+| Var | 4.59 |  
+| Maximum | 17 |   
+| Minimum | 3 |   
+
+| | TV Shows that last 2 seasons or less |
+| ------- | ------- | 
+| Length | 2218   | 
+| Median | 1.0  |
+| Mean | 1.19   |
+| Var | 0.15  |
+| Maximum | 2 |
+| Minimum | 1   | 
