@@ -32,6 +32,8 @@ Both diagrams accurately captures the workflow and key activities necessary to e
 
 ## MIS (Management Information System)
 
+FILE: [TransactionalProcess](https://github.com/pizarroiker/SI-P1/blob/master/Transaccional/TransactionalProcess.py)
+
 During this stage of the project, a first version of a management information system was developed. To achieve this, I obtained a .csv file provided by Kaggle containing data from different Netflix movies and series, which I had to transform to a format suitable for further processing using a high-level programming language.
 
 In my case, I decided to work with Python using the pandas library, widely recognized and currently used for data analysis. To store the information efficiently, I chose to use SQLite3 as a database, since it offers all the necessary features to meet the requirements of the project, in addition to presenting ease of use and integration, as it is an embedded database. Finally, to create the graphics, I selected the matplotlib library.
@@ -48,8 +50,7 @@ Once all the users were generated, I proceeded to randomly generate the users vi
 
 ### Database queries and statistics
 
-####FILE: 
-[Report](https://github.com/pizarroiker/SI-P1/blob/master/Transaccional/report.txt)
+FILE: [Report](https://github.com/pizarroiker/SI-P1/blob/master/Transaccional/report.txt)
 
 The first thing I did was to divide the shows table into a series of dataframes. The importance of this work lies in the organization's need to analyze and make decisions based on relevant and segmented information. For this, I classified the data into movies and series. Then, I grouped series by number of seasons and movies by length. This has made a certain section of the report much easier to perform. After doing this, the program will create an html report where we will show statistics of the show table and the dataframes mentioned above.
 
@@ -139,3 +140,4 @@ Returning to the previous dataframes, we have performed on each one a series of 
 These results could provide the organization important information about the distribution and temporal range of the analyzed data, which allows us to move forward in the project with a better understanding of the situation.
 
 ### Plots
+
