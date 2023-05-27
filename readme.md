@@ -157,19 +157,19 @@ By using bar charts, we are prioritizing clarity and ease of understanding the d
 
 One of the first graphs created is the top 10 most viewed movies. This bar chart shows in an orderly and hierarchical way the movies that have been most viewed, allowing us to quickly identify which are the most popular. This visual approach facilitates the interpretation of the information and helps most people to understand it in a simple way.
 
-![Movies Most Views](images/Grafico Movies Most Views.png)
+![Movies Most Views](images/GraficoMoviesMostViews.png)
 
 In line with our visual and comprehensible approach, we have extended the use of bar charts to represent the top 10 most viewed series. This new chart allows us to clearly and concisely visualize the most popular series in terms of number of views.
 
-![TV Shows Most Views](images/Grafico TV Shows Most Views.png)
+![TV Shows Most Views](images/GraficoTVShowsMostViews.png)
 
 In the final stage of this analysis, I compared content by duration, focusing on movies. To do so, I calculated the average number of views for movies with a duration of more than 90 minutes and the average number of views for movies with a duration of less than 90 minutes.
 
-![Average Type of Movies](images/Average-Movies.png)
+![Average Type of Movies](images/AverageMovies.png)
 
 I have done the same for TV Shows, comparing the average viewings of those with 2 or less seasons with those with more than 2 seasons.
 
-![Average Type of TV Shows](images/Average_Shows.png)
+![Average Type of TV Shows](images/AverageShows.png)
 
 
 ## Data Warehouse
