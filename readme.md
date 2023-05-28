@@ -196,8 +196,8 @@ In addition, I have reflected on the need for external information for the devel
 
 As for the choice of approach, I have chosen to use ROLAP and have designed our data warehouse following a star model. Below, I present the warehouse design, where the text fields are represented as VARCHAR2, as that was the option selected for "String" in the modeling tool used. The rows marked with "P" indicate the primary keys, while those marked with "F" represent the foreign keys. The arrows used simply indicate association by foreign keys, without regard to cardinality or other specifics. It is important to note that this design is a preliminary representation of the warehouse in SQL format and may undergo modifications during the implementation process.
 
-![Star Model](images/model.png)
+![Star Model](images/Model.png)
 
 ### Warehouse construction and ETLs
 
-FILE: [Data Warehouse Construction and loading](https://github.com/pizarroiker/SI-P1/blob/master/Datawarehouse/CreateDW.py)
+FILE: [Data Warehouse Construction and loading](https://github.com/pizarroiker/SI-P1/blob/master/DataWarehouse/createDW.py)
