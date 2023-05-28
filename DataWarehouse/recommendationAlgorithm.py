@@ -3,58 +3,58 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import pairwise_distances
 
-# Carga los datos de usuarios y visualizaciones desde la base de datos
-conn = sqlite3.connect('../DDBB/DataWarehouse.db')
-df_visualizaciones = pd.read_sql_query("SELECT * FROM visualizaciones", conn)
+# Load user data and visualizations from the database.
+con = sqlite3.connect('../DDBB/DataWarehouse.db')
+df_views = pd.read_sql_query("SELECT * FROM views", con)
 
-# Crea la matriz de usuarios por elementos vistos (Usamos la operación OLAP Pivot)
-matriz_usuarios_elementos = pd.pivot_table(df_visualizaciones, values='avg_rating', index='user_id', columns='show_id')
+# Create the array of users by viewed items (We use the OLAP Pivot operation)
+user_matrix_elements = pd.pivot_table(df_views, values='avg_rating', index='user_id', columns='show_id')
 
-def recomendar_programas(usuario, matriz_usuarios_elementos, n):
+def recommend_shows(user, user_matrix_elements, n):
 
-    # Calcula la similitud del coseno entre los usuarios
-    matriz_usuarios_elementos = matriz_usuarios_elementos.fillna(0)
-    similitud_usuarios = 1 - pairwise_distances(matriz_usuarios_elementos, metric='cosine')
+    # Calculates the cosine similarity between users.
+    user_matrix_elements = user_matrix_elements.fillna(0)
+    user_similarity = 1 - pairwise_distances(user_matrix_elements, metric='cosine')
 
-    # Encuentra los usuarios más similares
-    indices_usuarios = matriz_usuarios_elementos.index
-    indice_usuario = np.where(indices_usuarios == usuario)[0][0]
-    similitudes = list(zip(indices_usuarios, similitud_usuarios[indice_usuario]))
-    similitudes.sort(key=lambda x: x[1], reverse=True)
-    usuarios_similares = [similitud[0] for similitud in similitudes[1:]]
+    # Find the most similar users
+    user_indexes = user_matrix_elements.index
+    user_index = np.where(user_indexes == user)[0][0]
+    similarities = list(zip(user_indexes, user_similarity[user_index]))
+    similarities.sort(key=lambda x: x[1], reverse=True)
+    similar_users = [similarity[0] for similarity in similarities[1:]]
 
-    # Encuentra los elementos que el usuario ha visto
-    elementos_vistos = matriz_usuarios_elementos.loc[usuario]
-    elementos_vistos = elementos_vistos[~(elementos_vistos == 0)].index
+    # Finds the items the user has viewed
+    viewed_items = user_matrix_elements.loc[user]
+    viewed_items = viewed_items[~(viewed_items == 0)].index
 
-    # Encuentra los elementos que los usuarios similares han visto pero el usuario no ha visto
-    recomendaciones = {}
-    for usuario_similar in usuarios_similares:
-        elementos_vistos_similar = matriz_usuarios_elementos.loc[usuario_similar]
-        elementos_vistos_similar = elementos_vistos_similar[~(elementos_vistos_similar == 0)].index
-        elementos_no_vistos = set(elementos_vistos_similar) - set(elementos_vistos)
-        for elemento in elementos_no_vistos:
-            if elemento in recomendaciones:
-                recomendaciones[elemento] += similitudes[usuarios_similares.index(usuario_similar)][1]
+    # Finds items that similar users have seen but the user has not seen.
+    recommendations = {}
+    for similar_user in similar_users:
+        similar_viewed_items = user_matrix_elements.loc[similar_user]
+        similar_viewed_items = similar_viewed_items[~(similar_viewed_items == 0)].index
+        no_viewed_items = set(similar_viewed_items) - set(viewed_items)
+        for item in no_viewed_items:
+            if item in recommendations:
+                recommendations[item] += similarities[similar_users.index(similar_user)][1]
             else:
-                recomendaciones[elemento] = similitudes[usuarios_similares.index(usuario_similar)][1]
+                recommendations[item] = similarities[similar_users.index(similar_user)][1]
 
-    # Ordena las recomendaciones por similitud y devuelve las primeras n
-    recomendaciones_ordenadas = sorted(recomendaciones.items(), key=lambda x: x[1], reverse=True)[:n]
-    return [recomendacion[0] for recomendacion in recomendaciones_ordenadas]
+    # Sorts the recommendations by similarity and returns the first n
+    sorted_recommendations = sorted(recommendations.items(), key=lambda x: x[1], reverse=True)[:n]
+    return [recommendation[0] for recommendation in sorted_recommendations]
 
 
-# Pide al usuario que ingrese los datos de entrada
-user = int(input('Ingrese el ID del usuario: '))
+# Asks the user to enter the input data
+user = int(input('Enter the user ID: '))
 while user <= 0 or user > 300:
-    user = int(input('El ID del usuario debe estar entre 1 y 300. Ingrese nuevamente: '))
+    user = int(input('The User ID must be between 1 and 300:'))
 
-x = int(input('Ingrese el número de elementos a recomendar (máximo 10): '))
+x = int(input('Enter the number of items to recommend (maximum 10): '))
 while x <= 0 or x > 10:
-    x = int(input('El número de elementos a recomendar debe estar entre 1 y 10. Ingrese nuevamente: '))
+    x = int(input('The number of items to be recommended must be between 1 and 10:'))
 
-# Obtiene las recomendaciones y las imprime en pantalla
-recomendaciones = recomendar_programas(user, matriz_usuarios_elementos, x)
-sql_query = "SELECT title FROM articulo WHERE show_id IN ({})".format(','.join("'" + s + "'" for s in recomendaciones))
-df_recomendaciones = pd.read_sql_query(sql_query, conn)
-print(df_recomendaciones)
+# Gets recommendations and prints them on the screen
+recommendations = recommend_shows(user, user_matrix_elements, x)
+sql_query = "SELECT title FROM show WHERE show_id IN ({})".format(','.join("'" + s + "'" for s in recommendations))
+df_recommendations = pd.read_sql_query(sql_query, con)
+print(df_recommendations)

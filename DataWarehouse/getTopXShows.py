@@ -1,13 +1,13 @@
 import sqlite3
 import pandas as pd
 
-# Consulta SQL para obtener el top X de visualizaciones de un tipo de show específico
+# SQL query to obtain the top X displays of a specific show type
 def get_top_x_shows(show_type, x):
     conn = sqlite3.connect('../DDBB/DataWarehouse.db')
     query = f"""
             SELECT s.title, COUNT(*) as num_views
-            FROM visualizaciones v
-            JOIN articulo s ON v.show_id = s.show_id
+            FROM views v
+            JOIN show s ON v.show_id = s.show_id
             WHERE s.type = '{show_type}'
             GROUP BY s.title
             ORDER BY num_views DESC
@@ -19,22 +19,22 @@ def get_top_x_shows(show_type, x):
 # Type Selection
 
 tipos = ['Movie','TV Show']
-print('Tipos de material audiovisual disponibles:')
+print('Types of audiovisual material available:')
 for i, tipo in enumerate(tipos):
     print(f'{i+1}. {tipo}')
 tipo = ''
 while tipo not in tipos:
-    tipo = input('Ingrese el tipo deseado (Movie o TV Show): ')
+    tipo = input('Enter the desired type (Movie or TV Show): ')
     if tipo not in tipos:
-        print('Tipo inválido. Por favor, ingrese Movie o TV Show.')
+        print('Invalid type. Please enter Movie or TV Show.')
 
 # Top Selection
 
-top = int(input('Ingrese el número de elementos del top deseado: '))
+top = int(input('Enter the number of items of the desired top: '))
 
 
-# Obtenemos el resultado del SLICE & DICE en un
-# data frame e imprimimos el resultado
+# We obtain the result of the SLICE & DICE in a
+# data frame and print the result
 
 result = get_top_x_shows(tipo, top)
 print(result)

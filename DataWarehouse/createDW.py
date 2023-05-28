@@ -13,7 +13,7 @@ cursor_db = con_db.cursor()
 # Creation of the item table in the data warehouse
 
 cursor_dw.execute("""
-    CREATE TABLE IF NOT EXISTS articulo (
+    CREATE TABLE IF NOT EXISTS show (
         show_id      VARCHAR(4000),
         type         VARCHAR(4000),
         title        VARCHAR(4000),
@@ -33,7 +33,7 @@ cursor_dw.execute("""
 # Creation of the user table in the data warehouse
 
 cursor_dw.execute("""
-    CREATE TABLE IF NOT EXISTS usuario (
+    CREATE TABLE IF NOT EXISTS user (
         id           INTEGER,
         name         VARCHAR(4000),
         login_date   DATE,
@@ -45,7 +45,7 @@ cursor_dw.execute("""
 # Creation of the time table in the data warehouse
 
 cursor_dw.execute("""
-    CREATE TABLE IF NOT EXISTS tiempo (
+    CREATE TABLE IF NOT EXISTS time (
         id    INTEGER PRIMARY KEY AUTOINCREMENT,
         month INTEGER,
         year  INTEGER,
@@ -56,16 +56,16 @@ cursor_dw.execute("""
 # Creation of the fact table (visualizations) in the data warehouse
 
 cursor_dw.execute("""
-    CREATE TABLE IF NOT EXISTS visualizaciones (
+    CREATE TABLE IF NOT EXISTS views (
         id          INTEGER PRIMARY KEY AUTOINCREMENT,
         show_id     VARCHAR(2000),
         user_id     INTEGER NOT NULL,
         tiempo_id   INTEGER NOT NULL,
         count       INTEGER,
         avg_rating  NUMBER,
-        FOREIGN KEY (show_id) REFERENCES articulo (id),
-        FOREIGN KEY (tiempo_id) REFERENCES tiempo (id),
-        FOREIGN KEY (user_id) REFERENCES usuario (id)
+        FOREIGN KEY (show_id) REFERENCES show (id),
+        FOREIGN KEY (tiempo_id) REFERENCES time (id),
+        FOREIGN KEY (user_id) REFERENCES user (id)
     )
 """)
 
@@ -73,22 +73,22 @@ cursor_dw.execute("""
 
 for year in range(2018, 2023):
     for month in range(1, 13):
-        cursor_dw.execute("INSERT INTO tiempo (month, year) VALUES (?, ?)", (month, year))
+        cursor_dw.execute("INSERT INTO time (month, year) VALUES (?, ?)", (month, year))
 
 for month in range(1, 5):
-    cursor_dw.execute("INSERT INTO tiempo (month, year) VALUES (?, ?)", (month, 2023))
+    cursor_dw.execute("INSERT INTO time (month, year) VALUES (?, ?)", (month, 2023))
 
 # Users table construction (From the transactional to the storage, we pass the whole table)
 
 query = "SELECT  *  FROM user"
 df = pd.read_sql_query(query, con_db)
-df.to_sql('usuario',con_dw,if_exists='replace',index=False)
+df.to_sql('user',con_dw,if_exists='replace',index=False)
 
 # Construction table items (From the transactional to the storage, we pass the whole table)
 
 query = "SELECT  *  FROM show"
 df = pd.read_sql_query(query, con_db)
-df.to_sql('articulo',con_dw,if_exists='replace',index=False)
+df.to_sql('show',con_dw,if_exists='replace',index=False)
 
 # Construction of fact table (visualizations)
 
@@ -121,7 +121,7 @@ df = df.rename(columns={'date': 'tiempo_id'})
 
 # We load the fact table through the dataframe.
 
-df.to_sql('visualizaciones',con_dw,if_exists='replace',index=False)
+df.to_sql('views',con_dw,if_exists='replace',index=False)
 
 
 # Closing database connections

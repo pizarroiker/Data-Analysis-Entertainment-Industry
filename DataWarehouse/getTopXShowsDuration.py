@@ -1,14 +1,14 @@
 import sqlite3
 import pandas as pd
 
-# Consulta SQL para obtener el top X de visualizaciones de un tipo de show y duracion específicos
+# SQL query to obtain the top X views of a specific show type and duration.
 def get_top_x_shows(show_type, x, duration):
     conn = sqlite3.connect('../DDBB/DataWarehouse.db')
     if show_type == 'Movie':
         query = f"""
                 SELECT s.title, COUNT(*) as num_views
-                FROM visualizaciones v
-                JOIN articulo s ON v.show_id = s.show_id
+                FROM views v
+                JOIN show s ON v.show_id = s.show_id
                 WHERE s.type = '{show_type}'
                 AND CAST(SUBSTR(duration, 1, INSTR(duration, ' ') - 1) AS INTEGER) {'>' if duration == 'Over 90 min' else '<='} 90
                 GROUP BY s.title
@@ -20,8 +20,8 @@ def get_top_x_shows(show_type, x, duration):
         num_seasons = seasons[duration]
         query = f"""
                 SELECT s.title, COUNT(*) as num_views
-                FROM visualizaciones v
-                JOIN articulo s ON v.show_id = s.show_id
+                FROM views v
+                JOIN show s ON v.show_id = s.show_id
                 WHERE s.type = '{show_type}'
                 AND CAST(SUBSTR(duration, 1, INSTR(duration, ' ') - 1) AS INTEGER) {'=' if num_seasons <= 2 else '>='} {num_seasons}
                 GROUP BY s.title
@@ -33,44 +33,44 @@ def get_top_x_shows(show_type, x, duration):
 
 # Type Selection
 
-tipos = ['Movie','TV Show']
-print('Tipos de material audiovisual disponibles:')
-for i, tipo in enumerate(tipos):
-    print(f'{i+1}. {tipo}')
-tipo = ''
-while tipo not in tipos:
-    tipo = input('Ingrese el tipo deseado (Movie o TV Show): ')
-    if tipo not in tipos:
-        print('Tipo inválido. Por favor, ingrese Movie o TV Show.')
+types = ['Movie','TV Show']
+print('Types of audiovisual material available:')
+for i, type in enumerate(types):
+    print(f'{i+1}. {type}')
+type = ''
+while type not in types:
+    type = input('Enter the desired type (Movie or TV Show): ')
+    if type not in types:
+        print('Invalid type. Please enter Movie or TV Show.')
 
 # Top Selection
 
-top = int(input('Ingrese el número de elementos del top deseado: '))
+top = int(input('Enter the number of items of the desired top: '))
 
 # Duration Selection
 
 duration = ''
-if tipo == 'Movie':
+if type == 'Movie':
         while duration not in ['Over 90 min', 'Less or equal to 90 min']:
-            duration = input('¿Desea incluir películas con duración mayor a 90 minutos? (s/n): ')
-            if duration.lower() == 's':
+            duration = input('Do you wish to include films longer than 90 minutes? (y/n): ')
+            if duration.lower() == 'y':
                 duration = 'Over 90 min'
             elif duration.lower() == 'n':
                 duration = 'Less or equal to 90 min'
             else:
-                print('Respuesta inválida. Por favor, ingrese s o n.')
-elif tipo == 'TV Show':
+                print('Invalid answer. Please enter y or n.')
+elif type == 'TV Show':
         while duration not in ['1', '2', '3']:
             print()
-            print('Advertencia: El 3 busca las series con 3 o más temporadas.')
-            duration = input('¿Cuántas temporadas desea incluir? (1, 2, 3): ')
+            print('Warning: The 3 looks for series with 3 or more seasons.')
+            duration = input('How many seasons would you like to include (1, 2, 3):')
             if duration not in ['1', '2', '3']:
-                print('Respuesta inválida. Por favor, ingrese 1, 2 o 3+.')
+                print('Invalid answer. Please enter 1, 2 or 3+.')
 
 
-# Obtenemos el resultado del SLICE & DICE en un
-# data frame e imprimimos el resultado
+# We obtain the result of the SLICE & DICE in a
+# data frame and print the result
 
-result = get_top_x_shows(tipo, top, duration)
+result = get_top_x_shows(type, top, duration)
 print(result)
 
