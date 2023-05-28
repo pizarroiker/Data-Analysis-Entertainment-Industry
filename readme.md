@@ -233,7 +233,7 @@ Finally, this tree could be used to classify new movies into good, mid and bad, 
 
 In this section, I will present a non-functional version of the design for my BSC that can be used by senior executives to make decisions based on the top-viewed shows, recommend specific shows to users based on their similarity to other users, and provide rankings for both shows and users. As mentioned in the previous section, the user ranking has not been implemented yet, but we believe it is beneficial to include it in the CMI design as a proposal for future versions and to receive feedback from stakeholders. Below is an image depicting the design of the BSC:
 
-![BSC](images/BSC.png)
+![BSC](images/BSC.jpg)
 
 Note: The image provided represents a preliminary design and may undergo modifications during the implementation process. It serves as a visual representation of the proposed CMI layout and functionality, allowing executives to effectively analyze and make informed decisions based on the provided information.
 
