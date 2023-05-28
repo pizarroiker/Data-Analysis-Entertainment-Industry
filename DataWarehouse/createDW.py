@@ -69,7 +69,7 @@ cursor_dw.execute("""
     )
 """)
 
-# Construction time table (JANUARY 2018 - APRIL 2023)
+# Loading Time Table (JANUARY 2018 - APRIL 2023)
 
 for year in range(2018, 2023):
     for month in range(1, 13):
@@ -78,19 +78,19 @@ for year in range(2018, 2023):
 for month in range(1, 5):
     cursor_dw.execute("INSERT INTO time (month, year) VALUES (?, ?)", (month, 2023))
 
-# Users table construction (From the transactional to the storage, we pass the whole table)
+# Loading User Table (From the transactional to the storage, we pass the whole table)
 
 query = "SELECT  *  FROM user"
 df = pd.read_sql_query(query, con_db)
 df.to_sql('user',con_dw,if_exists='replace',index=False)
 
-# Construction table items (From the transactional to the storage, we pass the whole table)
+# Loading Show Table (From the transactional to the storage, we pass the whole table)
 
 query = "SELECT  *  FROM show"
 df = pd.read_sql_query(query, con_db)
 df.to_sql('show',con_dw,if_exists='replace',index=False)
 
-# Construction of fact table (visualizations)
+# Loading Fact Table (Views)
 
 query = "SELECT show_id, user_id, date, COUNT(*) as count, AVG(rating) as avg_rating FROM views GROUP BY show_id, " \
         "user_id, date"
