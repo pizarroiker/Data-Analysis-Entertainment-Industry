@@ -2,15 +2,15 @@ from datetime import datetime
 import sqlite3
 import pandas as pd
 
-# Conexión a la base de datos transaccional y al almacen
+# Connection to the transactional database and to the warehouse
 con_dw = sqlite3.connect('../DDBB/DataWarehouse.db')
 con_db = sqlite3.connect('../DDBB/TransactionalDatabase.db')
 
-# Cursor para ejecutar comandos SQL en ambos
+# Cursor to execute SQL commands in both databases
 cursor_dw = con_dw.cursor()
 cursor_db = con_db.cursor()
 
-# Creación de la tabla artículo en el almacén de datos
+# Creation of the item table in the data warehouse
 
 cursor_dw.execute("""
     CREATE TABLE IF NOT EXISTS articulo (
@@ -30,7 +30,7 @@ cursor_dw.execute("""
     )
 """)
 
-# Creación de la tabla usuario en el almacén de datos
+# Creation of the user table in the data warehouse
 
 cursor_dw.execute("""
     CREATE TABLE IF NOT EXISTS usuario (
@@ -42,7 +42,7 @@ cursor_dw.execute("""
     )
 """)
 
-# Creación de la tabla tiempo en el almacén de datos
+# Creation of the time table in the data warehouse
 
 cursor_dw.execute("""
     CREATE TABLE IF NOT EXISTS tiempo (
@@ -53,7 +53,7 @@ cursor_dw.execute("""
     )
 """)
 
-# Creación de la tabla de hechos (visualizaciones) en el almacén de datos
+# Creation of the fact table (visualizations) in the data warehouse
 
 cursor_dw.execute("""
     CREATE TABLE IF NOT EXISTS visualizaciones (
@@ -69,7 +69,7 @@ cursor_dw.execute("""
     )
 """)
 
-# Contrucción tabla tiempo (ENERO 2018 - ABRIL 2023)
+# Construction time table (JANUARY 2018 - APRIL 2023)
 
 for year in range(2018, 2023):
     for month in range(1, 13):
@@ -78,54 +78,53 @@ for year in range(2018, 2023):
 for month in range(1, 5):
     cursor_dw.execute("INSERT INTO tiempo (month, year) VALUES (?, ?)", (month, 2023))
 
-# Contrucción tabla usuarios (Desde el transaccional al almacen, pasamos la tabla entera)
+# Users table construction (From the transactional to the storage, we pass the whole table)
 
 query = "SELECT  *  FROM user"
 df = pd.read_sql_query(query, con_db)
 df.to_sql('usuario',con_dw,if_exists='replace',index=False)
 
-# Contrucción tabla artículos (Desde el transaccional al almacen, pasamos la tabla entera)
+# Construction table items (From the transactional to the storage, we pass the whole table)
 
 query = "SELECT  *  FROM show"
 df = pd.read_sql_query(query, con_db)
 df.to_sql('articulo',con_dw,if_exists='replace',index=False)
 
-# Contrucción tabla de hechos (visualizaciones)
+# Construction of fact table (visualizations)
 
 query = "SELECT show_id, user_id, date, COUNT(*) as count, AVG(rating) as avg_rating FROM views GROUP BY show_id, " \
         "user_id, date"
 df = pd.read_sql_query(query, con_db)
 
-# Define la función para calcular el id de la tabla tiempo en base a la fecha de la visualización
+# Defines the function to calculate the id of the time table based on the date of the display.
 def to_time_num(date_str):
 
-    # Convertir la fecha en string a un objeto datetime
+    # Convert the date in string to a datetime object
     date = datetime.strptime(date_str, '%Y-%m-%d').date()
 
-    # Obtener el año y mes de la fecha
+    # Obtain the year and month of the date
     year = date.year
     month = date.month
 
-    # Calcular el número de tiempo correspondiente a la fecha
+    # Calculate the number of time corresponding to the date
     time_num = (year - 2018) * 12 + month
 
     return time_num
-# FIN FUNCION
 
-# Aplica la función a la columna de fechas y almacena los resultados en una nueva columna
+# Apply the function to the date column and store the results in a new column.
 
 df['date'] = df['date'].apply(to_time_num)
 
-# Renombramos la columna para poder cargar los datos sin problemas en la tabla de hechos
+# We rename the column to be able to load the data without problems in the fact table.
 
 df = df.rename(columns={'date': 'tiempo_id'})
 
-# Cargamos mediante el dataframe la tabla de hechos
+# We load the fact table through the dataframe.
 
 df.to_sql('visualizaciones',con_dw,if_exists='replace',index=False)
 
 
-# Cierre de conexiones a las bases de datos
+# Closing database connections
 
 con_dw.close()
 con_db.close()
