@@ -202,7 +202,7 @@ As for the choice of approach, I have chosen to use ROLAP and have designed our 
 
 FILE: [Data Warehouse Construction and loading](https://github.com/pizarroiker/SI-P1/blob/master/DataWarehouse/createDW.py)
 
-After having designed the warehouse, we start to transform all this to code. For this, we have created the file [createDW.py](https://github.com/pizarroiker/SI-P1/blob/master/DataWarehouse/createDW.py) which builds the file [DataWarehouse.py](https://github.com/pizarroiker/SI-P1/blob/master/DDBB/DataWarehouse.db) where our data warehouse will be. Each part of the code will be explained below to make each step understandable.
+After having designed the warehouse, we start to transform all this to code. For this, we have created the file [createDW.py](https://github.com/pizarroiker/SI-P1/blob/master/DataWarehouse/createDW.py) which builds the file [DataWarehouse.db](https://github.com/pizarroiker/SI-P1/blob/master/DDBB/DataWarehouse.db) where our data warehouse will be. Each part of the code will be explained below to make each step understandable.
 
 To begin with, I performed a series of imports: sqlite3 (to operate with the transactional database and the warehouse), pandas and datetime (to help us with data extraction, transformation and loading). I then connected to the two databases using "sqlite3.connect()". Then with these connections I have associated a cursor to each one to be able to perform SQL operations on them.
 
