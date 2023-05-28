@@ -4,25 +4,25 @@ import sqlite3
 import pandas as pd
 from matplotlib import pyplot as plt
 
-#Creates Shows Table
+# Creates Shows Table
 def table_show(con):
     df = pd.read_csv("CSV/netflix_titles.csv", sep =';', header=0)
     df.to_sql("show", con, schema = None, if_exists= 'replace', index = False)
     con.commit()
 
-#Creates Users Table
+# Creates Users Table
 def tabla_users(con):
     df = pd.read_csv("CSV/users.csv", sep=',', header=0)
     df.to_sql("user", con, schema=None, if_exists='replace', index=False)
     con.commit()
 
-#Creates Views Table
+# Creates Views Table
 def tabla_views(con):
     df = pd.read_csv("CSV/views.csv", sep=',', header=0)
     df.to_sql("views", con, schema=None, if_exists='replace', index=False)
     con.commit()
 
-#Split Shows Table into Dataframes (TV Series, Shows, TV Series 2 or less seasons, TV Series 3 or more seasons....)
+# Split Shows Table into Dataframes (TV Series, Shows, TV Series 2 or less seasons, TV Series 3 or more seasons....)
 def group_dataframe(con):
     query = "SELECT  * FROM show WHERE type = 'Movie' AND CAST(duration as integer) >= 90 "
     query2 = "SELECT  *  FROM show WHERE type = 'Movie' AND CAST(duration as integer) < 90 "
@@ -48,17 +48,17 @@ def num_samples(con,f):
             "director IS NOT NULL AND country NOT NULL AND date_added NOT NULL AND " \
             "release_year NOT NULL AND rating NOT NULL AND duration NOT NULL AND listed_in NOT NULL AND " \
             "description NOT NULL and 'cast' NOT NULL"
-    tam = pd.read_sql_query(frase,con).values[0][0]
-    f.write("<tr>\n <td>Number of complete samples (without missing values)</td>\n <td>"+str(tam)+"</td>\n </tr>\n")
+    size = pd.read_sql_query(frase,con).values[0][0]
+    f.write("<tr>\n <td>Number of complete samples (without missing values)</td>\n <td>"+str(size)+"</td>\n </tr>\n")
 
 # Writes on the file the average duration of TV shows and movies
-def med_duration(con,f):
+def avg_duration(con,f):
     query = "SELECT AVG(duration) FROM show WHERE type = 'Movie' AND duration IS NOT NULL"
     query2 = "SELECT AVG(duration) FROM show WHERE type = 'TV Show' AND duration IS NOT NULL"
-    med_film = pd.read_sql_query(query, con).values[0][0]
-    med_show = pd.read_sql_query(query2, con).values[0][0]
-    f.write("<tr>\n <td>Average duration (Movies)</td>\n <td>" + str(round(med_film))+ " minutes" + "</td>\n </tr>\n")
-    f.write("<tr>\n <td>Average duration (TV Shows)</td>\n <td>" + str(round(med_show)) + " seasons" + "</td>\n </tr>\n")
+    avg_film = pd.read_sql_query(query, con).values[0][0]
+    avg_show = pd.read_sql_query(query2, con).values[0][0]
+    f.write("<tr>\n <td>Average duration (Movies)</td>\n <td>" + str(round(avg_film))+ " minutes" + "</td>\n </tr>\n")
+    f.write("<tr>\n <td>Average duration (TV Shows)</td>\n <td>" + str(round(avg_show)) + " seasons" + "</td>\n </tr>\n")
 
 # Writes on the file the standard deviation of duration from TV shows and movies
 def des_duration(con,f):
@@ -73,19 +73,19 @@ def des_duration(con,f):
 def max_duration(con,f):
     query = "SELECT MAX(CAST(duration as integer)) FROM show WHERE type = 'Movie' AND duration IS NOT NULL"
     query2 = "SELECT MAX(CAST(duration as integer)) FROM show WHERE type = 'TV Show' AND duration IS NOT NULL"
-    std_film = pd.read_sql_query(query, con).values[0][0]
-    std_show = pd.read_sql_query(query2, con).values[0][0]
-    f.write("<tr>\n <td>Maximum Movie duration</td>\n <td>" + str(std_film)+ " minutes" + "</td>\n </tr>\n")
-    f.write("<tr>\n <td>Maximum TV show duration</td>\n <td>" + str(std_show)+ " seasons" + "</td>\n </tr>\n")
+    max_film = pd.read_sql_query(query, con).values[0][0]
+    max_show = pd.read_sql_query(query2, con).values[0][0]
+    f.write("<tr>\n <td>Maximum Movie duration</td>\n <td>" + str(max_film)+ " minutes" + "</td>\n </tr>\n")
+    f.write("<tr>\n <td>Maximum TV show duration</td>\n <td>" + str(max_show)+ " seasons" + "</td>\n </tr>\n")
 
 # Writes on the file the minimum duration of TV shows and movies
 def min_duration(con,f):
     query = "SELECT MIN(CAST(duration as integer)) FROM show WHERE type = 'Movie' AND duration IS NOT NULL"
     query2 = "SELECT MIN(CAST(duration as integer)) FROM show WHERE type = 'TV Show' AND duration IS NOT NULL"
-    std_film = pd.read_sql_query(query, con).values[0][0]
-    std_show = pd.read_sql_query(query2, con).values[0][0]
-    f.write("<tr>\n <td>Minimum Movie duration</td>\n <td>" + str(std_film) + " minutes" + "</td>\n </tr>\n")
-    f.write("<tr>\n <td>Minimum TV show duration</td>\n <td>" + str(std_show) + " seasons" + "</td>\n </tr>\n")
+    min_film = pd.read_sql_query(query, con).values[0][0]
+    min_show = pd.read_sql_query(query2, con).values[0][0]
+    f.write("<tr>\n <td>Minimum Movie duration</td>\n <td>" + str(min_film) + " minutes" + "</td>\n </tr>\n")
+    f.write("<tr>\n <td>Minimum TV show duration</td>\n <td>" + str(min_show) + " seasons" + "</td>\n </tr>\n")
 
 # Writes on the file the oldest and the most recent year of publication
 def year(con,f):
@@ -235,7 +235,7 @@ if __name__ == "__main__" :
         file.write("\n<h1>Duration and age of audiovisual content</h1>\n")
         file.write("<table>\n <tr>\n <th>Statistic</th>\n <th>Value</th>\n </tr>\n")
         num_samples(con,file)
-        med_duration(con,file)
+        avg_duration(con,file)
         des_duration(con,file)
         max_duration(con,file)
         min_duration(con,file)
