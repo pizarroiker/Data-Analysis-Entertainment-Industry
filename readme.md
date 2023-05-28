@@ -173,3 +173,31 @@ I have done the same for TV Shows, comparing the average viewings of those with 
 
 
 ## Data Warehouse
+
+### Data warehouse Design
+
+In this phase, I have explored the theoretical concepts related to the design of a data warehouse. I have followed a series of steps to establish the basis of my design:
+
+First, I have selected the central fact for my data warehouse, which is "Visualizations". Later, I will define the measures associated with this fact.
+
+Next, I have identified the dimensions needed to address the issues raised. I have found the following relevant dimensions: a temporal dimension (mandatory) that will provide information about when the visualizations were performed, a "Show" dimension that will provide details about the movies or series visualized, and a "User" dimension that will indicate who performed the visualizations. 
+
+Then, I decided on the granularity for each of the dimensions. I have chosen to follow the atomic granularity in the "Show" dimension, as this will allow me to get all the information from the shows and present it in various forms. As for the "Time" dimension, I have decided to drill down only to months, considering that this information is sufficient for the tasks to be performed. Finally, in the "User" dimension, as in the "Item" dimension, I have opted for atomic granularity, including all user attributes.
+
+To complete the design of my data warehouse, I must select the measures and attributes related to the core fact and dimensions. The core measures for the fact "Visualizations" will be the total number of visualizations performed and the average ratings of these. As for the attributes, in the dimension "Time" I have decided to include the attributes of year and month. On the other hand, the "Item" dimension will contain all the fields of the "shows" table of my transactional database, and the "User" dimension will contain all the fields of the "users" table.
+
+Regarding the tables, I have considered the following:
+
+First, the "Time" table can be created and filled in directly, since we know in advance its structure and the information it will contain. In this case, I have decided to count the visualizations made from the beginning of January 2018 to April 2023, covering a period of approximately 5 years.
+
+On the other hand, the "Show" table will be identical to the "Shows" table in our transactional database, as it contains the relevant details of the movies or series viewed. Likewise, the "User" dimension will match the users table in our transactional database, as it provides information on who performed the views.
+
+In addition, I have reflected on the need for external information for the development of our data warehouse. I came to the conclusion that, although it is advisable to use internal and external sources, in this case I do not require additional information beyond what I already have in our transactional database to address the questions posed.
+
+As for the choice of approach, I have chosen to use ROLAP and have designed our data warehouse following a star model. Below, I present the warehouse design, where the text fields are represented as VARCHAR2, as that was the option selected for "String" in the modeling tool used. The rows marked with "P" indicate the primary keys, while those marked with "F" represent the foreign keys. The arrows used simply indicate association by foreign keys, without regard to cardinality or other specifics. It is important to note that this design is a preliminary representation of the warehouse in SQL format and may undergo modifications during the implementation process.
+
+![Star Model](images/model.png)
+
+### Warehouse construction and ETLs
+
+FILE: [Data Warehouse Construction and loading](https://github.com/pizarroiker/SI-P1/blob/master/Datawarehouse/CreateDW.py)
