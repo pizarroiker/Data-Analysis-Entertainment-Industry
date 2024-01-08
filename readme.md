@@ -1,4 +1,4 @@
-# Decision Optimization in the Entertainment Industry: Data Analytics and Process Modeling at Netflix.
+# Decision Optimization in the Entertainment Industry: Data Analysis and Process Modeling at Netflix.
 
 ## Introduction
 
